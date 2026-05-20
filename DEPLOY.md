@@ -2,6 +2,15 @@
 
 Monorepo: **frontend** → [Vercel](https://vercel.com), **backend** → [Render](https://render.com).
 
+## Your live URLs
+
+| Service | URL |
+|---------|-----|
+| **Frontend (Vercel)** | https://katomaran-eight.vercel.app |
+| **Backend (Render)** | https://katomaran-y789.onrender.com |
+
+**Render must have:** `FRONTEND_URL=https://katomaran-eight.vercel.app` (no trailing slash), then **Redeploy** backend.
+
 Use `.env.example` files locally (copy to `.env` and fill real values). **Never commit `.env` files.**
 
 ---

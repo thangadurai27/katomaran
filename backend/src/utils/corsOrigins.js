@@ -1,8 +1,11 @@
 /** FRONTEND_URL (docs) or CLIENT_URL (Render) + local dev */
+const PRODUCTION_FRONTEND = 'https://katomaran-eight.vercel.app';
+
 const getCorsOrigins = () => {
     const origins = new Set([
         'http://localhost:5173',
         'http://localhost:3000',
+        PRODUCTION_FRONTEND,
     ]);
 
     for (const key of ['FRONTEND_URL', 'CLIENT_URL']) {

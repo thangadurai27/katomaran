@@ -19,6 +19,8 @@ cd frontend && cp .env.example .env && npm install && npm run dev
 - API: `http://localhost:5000`
 - App: `http://localhost:5173`
 
+**Production:** [katomaran-eight.vercel.app](https://katomaran-eight.vercel.app) → API [katomaran-y789.onrender.com](https://katomaran-y789.onrender.com)
+
 ## Repository layout
 
 ```
