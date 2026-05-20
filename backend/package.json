@@ -17,6 +17,9 @@
   ],
   "author": "SnapLink AI Team",
   "license": "MIT",
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "archiver": "^8.0.0",

@@ -43,6 +43,7 @@ mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/katomaran?retryWrites=tru
 | `NODE_ENV` | `production` |
 | `PORT` | `5000` (Render sets `PORT` automatically; keep `5000` or leave Render default) |
 | `FRONTEND_URL` | `https://your-app.vercel.app` (no trailing slash) |
+| `CLIENT_URL` | Same as `FRONTEND_URL` if you prefer that name on Render |
 | `MONGODB_URI` | Atlas connection string |
 | `JWT_SECRET` | Long random string |
 | `JWT_REFRESH_SECRET` | Different long random string |

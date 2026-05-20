@@ -1,6 +1,8 @@
 require('dotenv').config();
+
 const express = require('express');
 const http = require('http');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -11,6 +13,7 @@ const path = require('path');
 const connectDB = require('./configs/db');
 const { initializeSocket } = require('./sockets/socketManager');
 const logger = require('./utils/logger');
+const { getCorsOrigins } = require('./utils/corsOrigins');
 const { generalLimiter } = require('./middlewares/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
 
@@ -35,14 +38,26 @@ const statsRoutes = require('./routes/stats.routes');
 const app = express();
 const server = http.createServer(app);
 
+// Render / reverse proxy
+app.set('trust proxy', 1);
+
+const logMissingEnv = () => {
+    const required = ['MONGODB_URI', 'JWT_SECRET', 'JWT_REFRESH_SECRET'];
+    for (const key of required) {
+        if (!process.env[key]) {
+            logger.warn(`Missing environment variable: ${key}`);
+        }
+    }
+    if (!process.env.FRONTEND_URL && !process.env.CLIENT_URL) {
+        logger.warn('Set FRONTEND_URL or CLIENT_URL for CORS (your Vercel URL)');
+    }
+};
+
+logMissingEnv();
+
 // Initialize Socket.io
 const io = initializeSocket(server);
-
-// Make io available to routes
 app.set('io', io);
-
-// Connect Database
-connectDB();
 
 // Security Middleware
 app.use(helmet({
@@ -50,36 +65,36 @@ app.use(helmet({
     contentSecurityPolicy: false
 }));
 
-// CORS
 app.use(cors({
-    origin: [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:3000'],
+    origin: getCorsOrigins(),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
-// Body Parsers
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(compression());
 
-// Logging
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-// Rate Limiting
 app.use('/api/', generalLimiter);
-
-// Static Files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// Health Check
+// Root — Render health / browser check
+app.get('/', (req, res) => {
+    res.send('SnapLink AI Backend Running');
+});
+
 app.get('/health', (req, res) => {
-    res.json({
+    const mongoReady = mongoose.connection.readyState === 1;
+    res.status(200).json({
         status: 'UP',
         service: 'SnapLink AI API',
+        mongo: mongoReady ? 'connected' : 'disconnected',
         timestamp: new Date().toISOString(),
         version: '1.0.0'
     });
@@ -101,11 +116,8 @@ app.use('/api/bio', bioRoutes);
 app.use('/api/bulk', bulkRoutes);
 app.use('/api/export', exportRoutes);
 app.use('/api/stats', statsRoutes);
-
-// Redirect Route (short URL resolution)
 app.use('/r', redirectRoutes);
 
-// 404 Handler
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -113,21 +125,23 @@ app.use((req, res) => {
     });
 });
 
-// Global Error Handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
+const HOST = '0.0.0.0';
 
-server.listen(PORT, () => {
-    logger.info(`🚀 SnapLink AI Server running on port ${PORT}`);
-    logger.info(`🌍 Environment: ${process.env.NODE_ENV}`);
-    logger.info(`📡 Socket.io initialized`);
+server.listen(PORT, HOST, () => {
+    logger.info(`SnapLink AI Server running on ${HOST}:${PORT}`);
+    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    connectDB();
 });
 
-// Handle Unhandled Promise Rejections
 process.on('unhandledRejection', (err) => {
     logger.error(`Unhandled Promise Rejection: ${err.message}`);
-    server.close(() => process.exit(1));
+});
+
+process.on('uncaughtException', (err) => {
+    logger.error(`Uncaught Exception: ${err.stack || err.message}`);
 });
 
 module.exports = { app, server };
