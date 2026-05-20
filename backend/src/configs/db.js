@@ -6,9 +6,31 @@ mongoose.set('bufferCommands', false);
 
 let isConnecting = false;
 
+/** Detect unencoded @ in password (common Render misconfiguration) */
+const validateMongoUri = (uri) => {
+    const match = uri.match(/^mongodb(\+srv)?:\/\/([^@]+)@(.+)$/i);
+    if (!match) return null;
+    const creds = match[2];
+    const hostPart = match[3];
+    if (creds.includes('@')) {
+        return 'Password contains "@". In MONGODB_URI encode it as %40 (e.g. Snaplink@123 → Snaplink%40123).';
+    }
+    if (!hostPart.includes('.') || hostPart.startsWith('123')) {
+        return 'MONGODB_URI host looks wrong. Use the full Atlas host: snaplink-cluster.b7j73vn.mongodb.net';
+    }
+    return null;
+};
+
 const connectDB = async () => {
     if (!process.env.MONGODB_URI) {
         logger.error('MONGODB_URI is not set — API will run but database features will fail');
+        return false;
+    }
+
+    const uri = process.env.MONGODB_URI.trim().replace(/^["']|["']$/g, '');
+    const uriError = validateMongoUri(uri);
+    if (uriError) {
+        logger.error(uriError);
         return false;
     }
 
@@ -27,7 +49,7 @@ const connectDB = async () => {
             options.dbName = process.env.MONGODB_DB_NAME;
         }
 
-        const conn = await mongoose.connect(process.env.MONGODB_URI, options);
+        const conn = await mongoose.connect(uri, options);
 
         logger.info(`MongoDB Connected: ${conn.connection.host}`);
         return true;
