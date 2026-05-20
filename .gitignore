@@ -12,7 +12,8 @@ backend/dist/
 
 # Logs & uploads
 backend/logs/
-backend/uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep
 *.log
 
 # OS / editor

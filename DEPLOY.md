@@ -21,9 +21,11 @@ That error means **MongoDB is not connected** on Render.
 
 1. **Render → Environment** → set `MONGODB_URI` to your full Atlas connection string.
 2. **MongoDB Atlas → Network Access** → **Allow Access from Anywhere** (`0.0.0.0/0`).
-3. URL-encode special characters in the database password (`@` → `%40`, `#` → `%23`).
-4. Example URI: `mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/katomaran?retryWrites=true&w=majority`
-5. Save → **Redeploy** Render → open `/health` → `"mongo": "connected"`.
+3. URL-encode special characters in the database password (`@` → `%40`, `#` → `%23`).  
+   Example: password `Snaplink@123` → `Snaplink%40123` in the URI.
+4. If logs show `EBADNAME _mongodb._tcp.123`, the `@` in the password was not encoded.
+5. Example URI: `mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/katomaran?retryWrites=true&w=majority`
+6. Save → **Redeploy** Render → open `/health` → `"mongo": "connected"`.
 
 ---
 

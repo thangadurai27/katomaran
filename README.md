@@ -59,8 +59,7 @@ katomaran/
 ├── frontend/         # Vite React app
 ├── docs/
 │   └── AI-PLANNING.md
-├── DEPLOY.md         # Vercel + Render deployment guide
-├── RENDER-MONGODB.md # MongoDB URI troubleshooting
+├── DEPLOY.md         # Vercel + Render + MongoDB troubleshooting
 └── README.md
 ```
 
@@ -223,7 +222,7 @@ sequenceDiagram
 | Backend local | `backend/.env.example` → `.env` |
 | Frontend local | `frontend/.env.example` → `.env` |
 | Frontend production | `frontend/.env.production` (Render API URLs) |
-| Deploy guide | [DEPLOY.md](./DEPLOY.md), [RENDER-MONGODB.md](./RENDER-MONGODB.md) |
+| Deploy guide | [DEPLOY.md](./DEPLOY.md) |
 
 ---
 
