@@ -1,19 +1,18 @@
 import axios from 'axios';
+import { API_URL } from '../config/env';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+    baseURL: API_URL,
     withCredentials: true,
     headers: { 'Content-Type': 'application/json' }
 });
 
-// Request interceptor - attach access token
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('accessToken');
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
 }, (error) => Promise.reject(error));
 
-// Response interceptor - handle 401 + refresh flow
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -26,7 +25,7 @@ api.interceptors.response.use(
                 if (!refreshToken) throw new Error('No refresh token');
 
                 const { data } = await axios.post(
-                    `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/refresh-token`,
+                    `${API_URL}/auth/refresh-token`,
                     { refreshToken },
                     { withCredentials: true }
                 );

@@ -75,13 +75,15 @@ mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/katomaran?retryWrites=tru
 | **Output Directory** | `dist` |
 | **Install Command** | `npm install` |
 
-3. **Environment Variables** (Production):
+3. **Environment Variables** (Production) — optional if `frontend/.env.production` is committed:
 
 | Key | Value |
 |-----|--------|
 | `VITE_API_URL` | `https://YOUR-SERVICE.onrender.com/api` |
 | `VITE_BASE_URL` | `https://YOUR-SERVICE.onrender.com` |
 | `VITE_SHORT_URL_BASE` | `https://YOUR-SERVICE.onrender.com/r/` |
+
+> Without these, the app still uses `frontend/.env.production` defaults on build.
 
 4. Deploy → copy URL, e.g. `https://katomaran.vercel.app`.
 

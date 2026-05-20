@@ -10,6 +10,7 @@ import useUIStore from '@/stores/uiStore';
 import useAuthStore from '@/stores/authStore';
 import { useIsMobile } from '@/hooks/useMediaQuery';
 import { io } from 'socket.io-client';
+import { BASE_URL } from '@/config/env';
 
 const DashboardLayout = () => {
     const { sidebarOpen, sidebarCollapsed, setSidebarOpen } = useUIStore();
@@ -23,7 +24,7 @@ const DashboardLayout = () => {
 
     useEffect(() => {
         if (!accessToken) return;
-        const socket = io(import.meta.env.VITE_BASE_URL || 'http://localhost:5000', {
+        const socket = io(BASE_URL, {
             auth: { token: accessToken },
             transports: ['websocket', 'polling'],
         });

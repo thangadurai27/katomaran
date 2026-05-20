@@ -10,11 +10,12 @@ import toast from 'react-hot-toast';
 import api from '@/lib/api';
 import { format } from 'date-fns';
 import PageHeader from '@/components/ui/PageHeader';
+import { SHORT_URL_BASE } from '@/config/env';
 
 const LinkCard = ({ link, onAction }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [expanded, setExpanded] = useState(false);
-    const shortUrl = `${import.meta.env.VITE_SHORT_URL_BASE || 'http://localhost:5000/r/'}${link.shortCode}`;
+    const shortUrl = `${SHORT_URL_BASE}${link.shortCode}`;
 
     const copyLink = (e) => {
         e.preventDefault();

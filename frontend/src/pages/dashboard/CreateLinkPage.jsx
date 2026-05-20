@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link2, Wand2, Shield, Clock, QrCode, ChevronDown, ChevronUp, Loader2, CheckCircle, ExternalLink, Copy, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
+import { SHORT_URL_BASE } from '@/config/env';
 
 const schema = z.object({
     originalUrl: z.string().url('Please enter a valid URL starting with http:// or https://'),
@@ -98,7 +99,7 @@ const CreateLinkPage = () => {
     };
 
     const shortUrl = createdLink
-        ? `${import.meta.env.VITE_SHORT_URL_BASE || 'http://localhost:5000/r/'}${createdLink.shortCode}`
+        ? `${SHORT_URL_BASE}${createdLink.shortCode}`
         : null;
 
     return (
@@ -180,7 +181,7 @@ const CreateLinkPage = () => {
                             <div className="flex gap-2">
                                 <div className="flex-1 relative">
                                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 text-sm whitespace-nowrap">
-                                        {import.meta.env.VITE_SHORT_URL_BASE?.split('/r/')[0]?.replace('http://', '')}/r/
+                                        {SHORT_URL_BASE.split('/r/')[0]?.replace('https://', '').replace('http://', '')}/r/
                                     </span>
                                     <input
                                         {...register('customAlias')}

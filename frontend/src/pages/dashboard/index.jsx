@@ -4,6 +4,7 @@ import { Globe, Layers, Download, Activity, Trash2, Shield } from 'lucide-react'
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
+import { API_URL } from '@/config/env';
 
 const PlaceholderPage = ({ icon: Icon, title, desc, color }) => (
     <div className="space-y-6 animate-in">
@@ -88,7 +89,7 @@ export const ExportCenterPage = () => (
                     <Download className="w-8 h-8 text-brand-400 mb-4" />
                     <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
                     <p className="text-slate-600 text-sm mb-4">{item.desc}</p>
-                    <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}${item.endpoint}`}
+                    <a href={`${API_URL}${item.endpoint}`}
                         className="btn-primary text-sm py-2"
                         target="_blank" rel="noopener noreferrer">
                         <Download className="w-4 h-4" /> Download

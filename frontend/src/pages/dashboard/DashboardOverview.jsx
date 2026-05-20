@@ -7,6 +7,7 @@ import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import api from '@/lib/api';
 import { format } from 'date-fns';
 import PageHeader from '@/components/ui/PageHeader';
+import { SHORT_URL_BASE } from '@/config/env';
 
 const DEVICE_COLORS = {
     desktop: '#6366f1',
@@ -238,7 +239,7 @@ const DashboardOverview = () => {
                                         {link.title || link.originalUrl}
                                     </p>
                                     <p className="text-xs truncate mt-0.5" style={{ color: 'var(--text-muted)' }}>
-                                        {import.meta.env.VITE_SHORT_URL_BASE}{link.shortCode}
+                                        {SHORT_URL_BASE}{link.shortCode}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-4">

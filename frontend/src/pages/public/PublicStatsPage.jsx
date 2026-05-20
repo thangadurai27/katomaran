@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Globe, Monitor, Smartphone, Loader2, MousePointerClick, Users, Share2, Copy, OctagonX } from 'lucide-react';
 import api from '@/lib/api';
+import { SHORT_URL_BASE } from '@/config/env';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 
@@ -30,7 +31,7 @@ const PublicStatsPage = () => {
         clicks: d.count
     })) || [];
 
-    const shortUrl = linkData ? `${import.meta.env.VITE_SHORT_URL_BASE || window.location.origin + '/r/'}${linkData.shortCode}` : '';
+    const shortUrl = linkData ? `${SHORT_URL_BASE}${linkData.shortCode}` : '';
 
     if (isLoading) return (
         <div className="min-h-screen bg-dark-950 flex items-center justify-center">

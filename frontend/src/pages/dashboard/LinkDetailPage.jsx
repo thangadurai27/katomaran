@@ -7,6 +7,7 @@ import api from '@/lib/api';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import PageHeader from '@/components/ui/PageHeader';
+import { SHORT_URL_BASE } from '@/config/env';
 
 const GRID_STROKE = '#e2e8f0';
 const AXIS_TICK = { fill: '#64748b', fontSize: 11 };
@@ -34,7 +35,7 @@ const LinkDetailPage = () => {
     const link = linkData;
     const analytics = analyticsData || {};
     const shortUrl = link
-        ? `${import.meta.env.VITE_SHORT_URL_BASE || 'http://localhost:5000/r/'}${link.shortCode}`
+        ? `${SHORT_URL_BASE}${link.shortCode}`
         : '';
 
     const dailyData =
