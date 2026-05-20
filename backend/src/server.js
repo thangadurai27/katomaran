@@ -16,6 +16,7 @@ const logger = require('./utils/logger');
 const { getCorsOrigins } = require('./utils/corsOrigins');
 const { generalLimiter } = require('./middlewares/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
+const requireDb = require('./middlewares/requireDb');
 
 // Import Routes
 const authRoutes = require('./routes/auth.routes');
@@ -100,7 +101,8 @@ app.get('/health', (req, res) => {
     });
 });
 
-// API Routes
+// API Routes (require MongoDB)
+app.use('/api', requireDb);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/links', linkRoutes);

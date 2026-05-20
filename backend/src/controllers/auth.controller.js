@@ -43,9 +43,10 @@ const signup = asyncHandler(async (req, res) => {
     });
 
     // Auto-generate username
-    let username = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+    let username = email.split('@')[0].toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 26);
+    if (username.length < 3) username = `user${Date.now().toString(36).slice(-6)}`;
     const usernameExists = await User.findOne({ username });
-    if (usernameExists) username = username + Math.floor(Math.random() * 9999);
+    if (usernameExists) username = `${username}${Math.floor(Math.random() * 9999)}`;
     user.username = username;
     await user.save();
 
@@ -61,7 +62,11 @@ const signup = asyncHandler(async (req, res) => {
 
     setAuthCookies(res, accessToken, refreshToken);
 
-    await ActivityLog.create({ user: user._id, action: 'login', description: 'Account created', ip: getClientIP(req), userAgent: req.headers['user-agent'] });
+    try {
+        await ActivityLog.create({ user: user._id, action: 'login', description: 'Account created', ip: getClientIP(req), userAgent: req.headers['user-agent'] });
+    } catch (logErr) {
+        logger.warn(`Activity log skipped: ${logErr.message}`);
+    }
 
     const userResponse = { ...user.toObject() };
     delete userResponse.password;

@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const logger = require('../utils/logger');
 
+// Fail fast when DB is down (avoid 10s "buffering timed out" → 500)
+mongoose.set('bufferCommands', false);
+
 let isConnecting = false;
 
 const connectDB = async () => {
@@ -15,12 +18,16 @@ const connectDB = async () => {
     isConnecting = true;
 
     try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI, {
-            dbName: process.env.MONGODB_DB_NAME || 'snaplink-ai',
+        const options = {
             maxPoolSize: 10,
-            serverSelectionTimeoutMS: 15000,
+            serverSelectionTimeoutMS: 20000,
             socketTimeoutMS: 45000,
-        });
+        };
+        if (process.env.MONGODB_DB_NAME) {
+            options.dbName = process.env.MONGODB_DB_NAME;
+        }
+
+        const conn = await mongoose.connect(process.env.MONGODB_URI, options);
 
         logger.info(`MongoDB Connected: ${conn.connection.host}`);
         return true;

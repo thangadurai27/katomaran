@@ -15,6 +15,18 @@ Use `.env.example` files locally (copy to `.env` and fill real values). **Never 
 
 ---
 
+## Fix HTTP 500 on signup/login (`buffering timed out`)
+
+That error means **MongoDB is not connected** on Render.
+
+1. **Render → Environment** → set `MONGODB_URI` to your full Atlas connection string.
+2. **MongoDB Atlas → Network Access** → **Allow Access from Anywhere** (`0.0.0.0/0`).
+3. URL-encode special characters in the database password (`@` → `%40`, `#` → `%23`).
+4. Example URI: `mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/katomaran?retryWrites=true&w=majority`
+5. Save → **Redeploy** Render → open `/health` → `"mongo": "connected"`.
+
+---
+
 ## 1. MongoDB Atlas (required for production)
 
 1. Create a free cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).

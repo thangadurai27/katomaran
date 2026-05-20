@@ -35,6 +35,17 @@ const errorHandler = (err, req, res, next) => {
         message = `Invalid ${err.path}: ${err.value}`;
     }
 
+    // MongoDB not connected
+    if (
+        err.name === 'MongooseError' ||
+        err.name === 'MongoServerSelectionError' ||
+        err.name === 'MongoNetworkError' ||
+        (err.message && err.message.includes('buffering timed out'))
+    ) {
+        statusCode = 503;
+        message = 'Database is not available. Check MONGODB_URI and MongoDB Atlas network access.';
+    }
+
     // Log error
     if (statusCode >= 500) {
         logger.error(`[${statusCode}] ${req.method} ${req.url}: ${err.stack}`);
