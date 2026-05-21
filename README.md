@@ -63,6 +63,21 @@ Here is the flow of the application:
 ### 10. Campaigns
 ![Campaigns](./Screenshot/campaigns.png)
 
+### 11. Dashboard Overview
+![Dashboard Overview](./Screenshot/dashboard-overview.png)
+
+### 12. Dashboard Details
+![Dashboard Details](./Screenshot/dashboard-details.png)
+
+### 13. Bulk Shortener
+![Bulk Shortener](./Screenshot/bulk-shortener.png)
+
+### 14. Activity Logs
+![Activity Logs](./Screenshot/activity-logs.png)
+
+### 15. Profile Settings
+![Profile](./Screenshot/profile.png)
+
 ---
 
 ## Features
