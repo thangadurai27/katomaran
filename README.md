@@ -34,19 +34,19 @@ Replace the URL above with your recorded walkthrough (signup → create link →
 Here is the flow of the application:
 
 ### 1. Landing Page
-![Landing Page](./assets/landing.png)
+![Landing Page](./Screenshot/landing.png)
 
 ### 2. Sign Up
-![Sign Up](./assets/signup.png)
+![Sign Up](./Screenshot/signup.png)
 
 ### 3. Create Short Link
-![Create Link](./assets/create-link.png)
+![Create Link](./Screenshot/create-link.png)
 
 ### 4. Link & QR Code Generated
-![Link Created](./assets/link-created.png)
+![Link Created](./Screenshot/link-created.png)
 
 ### 5. My Links Dashboard
-![My Links](./assets/my-links.png)
+![My Links](./Screenshot/my-links.png)
 
 ---
 
