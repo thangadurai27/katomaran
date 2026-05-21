@@ -48,6 +48,21 @@ Here is the flow of the application:
 ### 5. My Links Dashboard
 ![My Links](./Screenshot/my-links.png)
 
+### 6. Analytics Overview
+![Analytics Overview](./Screenshot/analytics-overview.png)
+
+### 7. Analytics Details
+![Analytics Details](./Screenshot/analytics-detailed.png)
+
+### 8. AI Insights
+![AI Insights](./Screenshot/ai-insights.png)
+
+### 9. QR Center
+![QR Center](./Screenshot/qr-center.png)
+
+### 10. Campaigns
+![Campaigns](./Screenshot/campaigns.png)
+
 ---
 
 ## Features
