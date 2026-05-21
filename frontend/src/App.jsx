@@ -67,12 +67,12 @@ const GuestRoute = ({ children }) => {
 };
 
 function App() {
-  const { isAuthenticated, fetchMe } = useAuthStore();
+  const { isAuthenticated, user, accessToken, fetchMe } = useAuthStore();
   useThemeInit();
 
   useEffect(() => {
-    if (isAuthenticated) fetchMe();
-  }, []);
+    if (isAuthenticated && accessToken && !user) fetchMe();
+  }, [isAuthenticated, accessToken, user, fetchMe]);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -25,8 +25,8 @@ const LoginPage = () => {
     const onSubmit = async (data) => {
         const result = await login(data);
         if (result.success) {
-            toast.success('Welcome back! 🎉');
-            navigate('/dashboard');
+            navigate('/dashboard/overview', { replace: true });
+            toast.success('Welcome back!');
         } else {
             toast.error(result.error);
         }

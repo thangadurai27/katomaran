@@ -1,26 +1,33 @@
 const nodemailer = require('nodemailer');
 const logger = require('./logger');
 
-const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: parseInt(process.env.EMAIL_PORT),
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+const hasEmailConfig = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
+
+const transporter = hasEmailConfig
+    ? nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: parseInt(process.env.EMAIL_PORT, 10) || 587,
+        secure: false,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+        connectionTimeout: 3000,
+        greetingTimeout: 3000,
+        socketTimeout: 5000,
+    })
+    : null;
 
 const sendEmail = async ({ to, subject, html, text }) => {
+    if (!transporter) return { success: false, skipped: true };
     try {
-        const mailOptions = {
+        const info = await transporter.sendMail({
             from: process.env.EMAIL_FROM,
             to,
             subject,
             html,
-            text
-        };
-        const info = await transporter.sendMail(mailOptions);
+            text,
+        });
         logger.info(`Email sent: ${info.messageId} to ${to}`);
         return { success: true, messageId: info.messageId };
     } catch (error) {
@@ -30,6 +37,7 @@ const sendEmail = async ({ to, subject, html, text }) => {
 };
 
 const sendVerificationEmail = async (user, token) => {
+    if (!transporter) return;
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
     return sendEmail({
         to: user.email,
@@ -45,11 +53,12 @@ const sendVerificationEmail = async (user, token) => {
         </div>
         <p style="color: #94a3b8; font-size: 14px;">This link expires in 24 hours. If you didn't create an account, ignore this email.</p>
       </div>
-    `
+    `,
     });
 };
 
 const sendPasswordResetEmail = async (user, token) => {
+    if (!transporter) return;
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
     return sendEmail({
         to: user.email,
@@ -65,7 +74,7 @@ const sendPasswordResetEmail = async (user, token) => {
         </div>
         <p style="color: #94a3b8; font-size: 14px;">This link expires in 1 hour. If you didn't request this, ignore this email.</p>
       </div>
-    `
+    `,
     });
 };
 

@@ -37,8 +37,8 @@ const SignupPage = () => {
     const onSubmit = async ({ name, email, password }) => {
         const result = await signup({ name, email, password });
         if (result.success) {
-            toast.success('Account created! Welcome to SnapLink AI 🚀');
-            navigate('/dashboard');
+            navigate('/dashboard/overview', { replace: true });
+            toast.success('Account created! Welcome to SnapLink AI');
         } else {
             toast.error(result.error);
         }

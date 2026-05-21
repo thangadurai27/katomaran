@@ -118,11 +118,12 @@ userSchema.index({ googleId: 1 });
 userSchema.index({ githubId: 1 });
 userSchema.index({ createdAt: -1 });
 
-// Password hashing
+// Password hashing (rounds 10 ≈ 4× faster than 12, still secure for web auth)
+const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS, 10) || 10;
+
 userSchema.pre('save', async function () {
     if (!this.isModified('password') || !this.password) return;
-    const salt = await bcrypt.genSalt(12);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password, BCRYPT_ROUNDS);
 });
 
 // Compare password

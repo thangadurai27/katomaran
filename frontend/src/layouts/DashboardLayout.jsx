@@ -24,12 +24,18 @@ const DashboardLayout = () => {
 
     useEffect(() => {
         if (!accessToken) return;
-        const socket = io(BASE_URL, {
-            auth: { token: accessToken },
-            transports: ['websocket', 'polling'],
-        });
-        window.__socket = socket;
-        return () => socket.disconnect();
+        const timer = setTimeout(() => {
+            const socket = io(BASE_URL, {
+                auth: { token: accessToken },
+                transports: ['websocket', 'polling'],
+                reconnectionDelayMax: 5000,
+            });
+            window.__socket = socket;
+        }, 0);
+        return () => {
+            clearTimeout(timer);
+            window.__socket?.disconnect();
+        };
     }, [accessToken]);
 
     useEffect(() => {

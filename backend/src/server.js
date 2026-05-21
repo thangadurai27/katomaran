@@ -132,10 +132,19 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 const HOST = '0.0.0.0';
 
-server.listen(PORT, HOST, () => {
-    logger.info(`SnapLink AI Server running on ${HOST}:${PORT}`);
-    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
-    connectDB();
+const startServer = async () => {
+    await connectDB();
+    server.listen(PORT, HOST, () => {
+        logger.info(`SnapLink AI Server running on ${HOST}:${PORT}`);
+        logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+};
+
+startServer().catch((err) => {
+    logger.error(`Failed to start server: ${err.message}`);
+    server.listen(PORT, HOST, () => {
+        logger.warn('Server listening without confirmed MongoDB connection');
+    });
 });
 
 process.on('unhandledRejection', (err) => {
