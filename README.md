@@ -11,7 +11,7 @@
 | **Live app (Frontend)** | [**https://katomaran-eight.vercel.app**](https://katomaran-eight.vercel.app) | React SPA — signup, dashboard, AI chat, PWA |
 | **API (Backend)** | [**https://katomaran-y789.onrender.com**](https://katomaran-y789.onrender.com) | Express REST + Socket.io |
 | **API health** | [https://katomaran-y789.onrender.com/health](https://katomaran-y789.onrender.com/health) | Status + MongoDB connection |
-| **GitHub** | [https://github.com/thangadurai27/katomaran](https://github.com/thangadurai27/katomaran) | Source code |
+| **GitHub** | [https://github.com/thangadurai27/katomaran.git](https://github.com/thangadurai27/katomaran.git) | Source code |
 
 **Short links format:** `https://katomaran-y789.onrender.com/r/{code}`
 
@@ -31,51 +31,22 @@ Replace the URL above with your recorded walkthrough (signup → create link →
 
 ## Screenshots
 
-All screenshots are in the [`Screenshot/`](./Screenshot/) folder (27 images, demo order). Index: [Screenshot/README.md](./Screenshot/README.md).
+Here is the flow of the application:
 
-### 1. Landing & marketing
+### 1. Landing Page
+![Landing Page](./assets/landing.png)
 
-| | |
-|:---:|:---:|
-| ![01 - Landing home](./Screenshot/01-landing-home.png) | ![02 - Hero light](./Screenshot/02-landing-hero-light.png) |
-| ![03 - Landing dark](./Screenshot/03-landing-dark.png) | ![04 - Dark hero](./Screenshot/04-landing-dark-hero.png) |
+### 2. Sign Up
+![Sign Up](./assets/signup.png)
 
-### 2. Auth & features
+### 3. Create Short Link
+![Create Link](./assets/create-link.png)
 
-| | |
-|:---:|:---:|
-| ![05 - Sign up](./Screenshot/05-signup.png) | ![06 - Features page](./Screenshot/06-features-page.png) |
-| ![07 - Features grid](./Screenshot/07-features-grid.png) | |
+### 4. Link & QR Code Generated
+![Link Created](./assets/link-created.png)
 
-### 3. Dashboard
-
-| | |
-|:---:|:---:|
-| ![08 - Dashboard overview](./Screenshot/08-dashboard-overview.png) | ![09 - Dashboard stats](./Screenshot/09-dashboard-stats.png) |
-| ![10 - Create link](./Screenshot/10-create-link.png) | ![11 - My links](./Screenshot/11-my-links.png) |
-
-### 4. Analytics & AI
-
-| | |
-|:---:|:---:|
-| ![12 - Analytics](./Screenshot/12-analytics.png) | ![13 - AI insights](./Screenshot/13-ai-insights.png) |
-
-### 5. Tools
-
-| | |
-|:---:|:---:|
-| ![14 - QR center](./Screenshot/14-qr-center.png) | ![15 - Campaigns](./Screenshot/15-campaigns.png) |
-| ![16 - Bulk shortener](./Screenshot/16-bulk-shortener.png) | ![17 - Activity logs](./Screenshot/17-activity-logs.png) |
-
-### 6. Account & additional screens
-
-| | |
-|:---:|:---:|
-| ![18 - Profile](./Screenshot/18-profile.png) | ![19](./Screenshot/19-app-screen.png) |
-| ![20](./Screenshot/20-app-screen.png) | ![21](./Screenshot/21-app-screen.png) |
-| ![22](./Screenshot/22-app-screen.png) | ![23](./Screenshot/23-app-screen.png) |
-| ![24](./Screenshot/24-app-screen.png) | ![25](./Screenshot/25-app-screen.png) |
-| ![26](./Screenshot/26-app-screen.png) | ![27](./Screenshot/27-app-screen.png) |
+### 5. My Links Dashboard
+![My Links](./assets/my-links.png)
 
 ---
 
