@@ -19,8 +19,6 @@
 
 ## Demo video (required for hackathon review)
 
-> Submissions **without** an explanatory video will **not** be reviewed.
-
 | Platform | Link |
 |----------|------|
 | **YouTube / Loom demo** | **➡️ [VIDEO LINK HERE](https://drive.google.com/file/d/1tN1Hd6fdHZSUR48sNiC9owqdgfzvfmXc/view?usp=drive_link)** |
