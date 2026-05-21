@@ -29,6 +29,56 @@ Replace the URL above with your recorded walkthrough (signup → create link →
 
 ---
 
+## Screenshots
+
+All screenshots are in the [`Screenshot/`](./Screenshot/) folder (27 images, demo order). Index: [Screenshot/README.md](./Screenshot/README.md).
+
+### 1. Landing & marketing
+
+| | |
+|:---:|:---:|
+| ![01 - Landing home](./Screenshot/01-landing-home.png) | ![02 - Hero light](./Screenshot/02-landing-hero-light.png) |
+| ![03 - Landing dark](./Screenshot/03-landing-dark.png) | ![04 - Dark hero](./Screenshot/04-landing-dark-hero.png) |
+
+### 2. Auth & features
+
+| | |
+|:---:|:---:|
+| ![05 - Sign up](./Screenshot/05-signup.png) | ![06 - Features page](./Screenshot/06-features-page.png) |
+| ![07 - Features grid](./Screenshot/07-features-grid.png) | |
+
+### 3. Dashboard
+
+| | |
+|:---:|:---:|
+| ![08 - Dashboard overview](./Screenshot/08-dashboard-overview.png) | ![09 - Dashboard stats](./Screenshot/09-dashboard-stats.png) |
+| ![10 - Create link](./Screenshot/10-create-link.png) | ![11 - My links](./Screenshot/11-my-links.png) |
+
+### 4. Analytics & AI
+
+| | |
+|:---:|:---:|
+| ![12 - Analytics](./Screenshot/12-analytics.png) | ![13 - AI insights](./Screenshot/13-ai-insights.png) |
+
+### 5. Tools
+
+| | |
+|:---:|:---:|
+| ![14 - QR center](./Screenshot/14-qr-center.png) | ![15 - Campaigns](./Screenshot/15-campaigns.png) |
+| ![16 - Bulk shortener](./Screenshot/16-bulk-shortener.png) | ![17 - Activity logs](./Screenshot/17-activity-logs.png) |
+
+### 6. Account & additional screens
+
+| | |
+|:---:|:---:|
+| ![18 - Profile](./Screenshot/18-profile.png) | ![19](./Screenshot/19-app-screen.png) |
+| ![20](./Screenshot/20-app-screen.png) | ![21](./Screenshot/21-app-screen.png) |
+| ![22](./Screenshot/22-app-screen.png) | ![23](./Screenshot/23-app-screen.png) |
+| ![24](./Screenshot/24-app-screen.png) | ![25](./Screenshot/25-app-screen.png) |
+| ![26](./Screenshot/26-app-screen.png) | ![27](./Screenshot/27-app-screen.png) |
+
+---
+
 ## Features
 
 - URL shortening with custom aliases, passwords, expiry, and geo/device rules
@@ -59,6 +109,7 @@ katomaran/
 ├── frontend/         # Vite React app
 ├── docs/
 │   └── AI-PLANNING.md
+├── Screenshot/       # App screenshots (01–27, demo order)
 ├── DEPLOY.md         # Vercel + Render + MongoDB troubleshooting
 └── README.md
 ```
