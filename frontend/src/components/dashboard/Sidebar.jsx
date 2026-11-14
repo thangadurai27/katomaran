@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import useUIStore from '@/stores/uiStore';
 import useAuthStore from '@/stores/authStore';
 import { useIsMobile } from '@/hooks/useMediaQuery';
-import { LayoutDashboard, Link2, Plus, Brain, QrCode, Megaphone, Users, Globe, Layers, Shield, Settings, User, Trash2, LogOut, X, Eye, EyeOff } from 'lucide-react';
+import { LayoutDashboard, Link2, Plus, Brain, QrCode, Megaphone, Users, Globe, Layers, Shield, Settings, User, Trash2, LogOut, X, Eye, EyeOff, BarChart2 } from 'lucide-react';
 
 const navItems = [
     {
@@ -20,7 +20,7 @@ const navItems = [
     {
         section: 'ANALYTICS',
         items: [
-            { label: 'Analytics', icon: BarChart3, path: '/dashboard/analytics' },
+            { label: 'Analytics', icon: BarChart2, path: '/dashboard/analytics' },
             { label: 'AI Insights', icon: Brain, path: '/dashboard/ai-insights', badge: 'AI' }
         ],
     },
