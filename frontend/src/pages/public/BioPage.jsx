@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Globe, Monitor, Smartphone, Loader2, MousePointerClick, Users, Share2, Copy, OctagonX, Link as LinkIcon, MessageCircle } from 'lucide-react';
+import { Globe, Monitor, Smartphone, Loader2, MousePointerClick, Users, Share2, Copy, OctagonX, Link as LinkIcon, MessageCircle, ExternalLink } from 'lucide-react';
 import api from '@/lib/api';
 
 const SOCIAL_ICONS = { twitter: MessageCircle, instagram: Globe, linkedin: LinkIcon, youtube: Monitor, github: OctagonX };

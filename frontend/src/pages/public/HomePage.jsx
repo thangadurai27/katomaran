@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { motion } from 'framer-motion';
-import { Zap, Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, Shield, TrendingUp, Clock, Users, Plus } from 'lucide-react';
+import { Zap, Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, Shield, TrendingUp, Clock, Users, Plus, MousePointerClick } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '@/lib/api';
 import { format } from 'date-fns';

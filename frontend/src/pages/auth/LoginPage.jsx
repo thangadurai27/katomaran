@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import { Input, Button } from '@/components/ui';
+import { Zap, Eye, EyeOff } from 'lucide-react';
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);

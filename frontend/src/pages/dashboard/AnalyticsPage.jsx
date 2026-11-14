@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Globe, Monitor, TrendingUp, Users, Compass, BarChart2 } from 'lucide-react';
+import { Globe, Monitor, TrendingUp, Users, Compass, BarChart2, Download, Eye } from 'lucide-react';
 import api from '@/lib/api';
 import { format } from 'date-fns';
 import PageHeader from '@/components/ui/PageHeader';

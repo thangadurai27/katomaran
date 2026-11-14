@@ -91,7 +91,7 @@ const TeamPage = () => {
                     <div className="h-64 rounded-lg bg-slate-100 animate-pulse" />
                 ) : members.length === 0 ? (
                     <div className="text-center py-12">
-                        <UsersOff className="w-12 h-12 text-slate-400 mb-3" />
+                        <UserX className="w-12 h-12 text-slate-400 mb-3" />
                         <p className="text-slate-500">No team members yet</p>
                         <p className="text-sm">
                             <a href="#" className="font-medium text-primary">Add your first member</a>
@@ -112,7 +112,7 @@ const TeamPage = () => {
                                     onClick={() => removeMember(member.id)}
                                     className="p-1 rounded-lg hover:bg-primary/5 text-primary text-sm"
                                 >
-                                    <UsersRemove className="w-3.5 h-3.5" /> Remove
+                                    <UserMinus className="w-3.5 h-3.5" /> Remove
                                 </button>
                             </div>
                         ))}
