@@ -251,6 +251,11 @@
     background-image: linear-gradient(135deg, #4f46e5, #8b5cf6);
   }
 
+  .gradient-text-with-ai {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #6846F5, #8B45F8, #A78BFA);
+  }
+
   /* ── Badges ──────────────────────────────────────────── */
   .badge {
     @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
@@ -736,7 +741,14 @@
   border: 1px solid var(--border);
 }
 
-/* ─── Reduce Motion ────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
 @media (prefers-reduced-motion: reduce) {
 
   *,

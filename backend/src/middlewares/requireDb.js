@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
+const logger = require('../utils/logger');
 const { error } = require('../utils/apiResponse');
 
 const requireDb = (req, res, next) => {
-    if (mongoose.connection.readyState === 1) return next();
+    if (mongoose.connection.readyState === 1) {
+        return next();
+    }
+
+    // Log the disconnection but don't crash; provide helpful message
+    logger.warn(`Database not connected (readyState: ${mongoose.connection.readyState}), API features will be limited`);
 
     return error(
         res,

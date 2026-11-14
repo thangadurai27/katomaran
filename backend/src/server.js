@@ -132,16 +132,28 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 const HOST = '0.0.0.0';
 
+// Start DB connection first, then start the server
+// If DB connection fails, server still starts but API routes requiring DB will return 503
 const startServer = async () => {
-    await connectDB();
+    const dbConnected = await connectDB();
+
+    if (dbConnected) {
+        logger.info('MongoDB connected - API routes will function normally');
+    } else {
+        logger.warn('MongoDB not connected - API routes requiring database will return 503');
+    }
+
     server.listen(PORT, HOST, () => {
         logger.info(`SnapLink AI Server running on ${HOST}:${PORT}`);
         logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+        logger.info(`MongoDB readyState: ${mongoose.connection.readyState}`);
     });
 };
 
+// Handle unhandled promise rejections globally
 startServer().catch((err) => {
     logger.error(`Failed to start server: ${err.message}`);
+    // Even if server start fails, try to listen so we don't lose the port
     server.listen(PORT, HOST, () => {
         logger.warn('Server listening without confirmed MongoDB connection');
     });
@@ -149,6 +161,8 @@ startServer().catch((err) => {
 
 process.on('unhandledRejection', (err) => {
     logger.error(`Unhandled Promise Rejection: ${err.message}`);
+    // Attempt to reconnect to MongoDB
+    connectDB().catch((e) => logger.error('Failed to reconnect to MongoDB:', e.message));
 });
 
 process.on('uncaughtException', (err) => {

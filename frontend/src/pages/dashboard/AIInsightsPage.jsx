@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Wand2, ShieldCheck, TrendingUp, MessageCircle, BookOpen, Megaphone, Loader2, Send, Sparkles } from 'lucide-react';
 import api from '@/lib/api';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import PageHeader from '@/components/ui/PageHeader';
 import BottomSheet from '@/components/ui/BottomSheet';
 import { useIsMobile } from '@/hooks/useMediaQuery';
@@ -13,7 +13,7 @@ const AIFeatureCard = ({ icon: Icon, title, desc, color, onClick, loading }) => 
         type="button"
         onClick={onClick}
         disabled={loading}
-        className="card-hover p-6 text-left group w-full h-full"
+        className="card-hover p-5 text-left group w-full h-full"
     >
         <div className={`w-12 h-12 rounded-xl ${color} flex items-center justify-center mb-4 group-hover:scale-105 transition-transform shadow-sm`}>
             <Icon className="w-6 h-6 text-white" />
@@ -21,7 +21,7 @@ const AIFeatureCard = ({ icon: Icon, title, desc, color, onClick, loading }) => 
         <h3 className="text-lg font-semibold text-slate-900 mb-1.5">{title}</h3>
         <p className="text-slate-600 text-sm leading-relaxed">{desc}</p>
         {loading && (
-            <div className="mt-3 flex items-center gap-2 text-indigo-600 text-sm font-medium">
+            <div className="mt-3 flex items-center gap-2 text-primary text-sm font-medium">
                 <Loader2 className="w-4 h-4 animate-spin" /> Analyzing…
             </div>
         )}
@@ -34,10 +34,10 @@ const ResultBox = ({ title, data }) => {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card-elevated p-6 border-indigo-100 bg-indigo-50/40"
+            className="card-elevated p-6 border-primary/10 bg-primary/5"
         >
             <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-indigo-600" /> {title}
+                <Sparkles className="w-5 h-5 text-primary" /> {title}
             </h3>
             {typeof data === 'string' ? (
                 <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">{data}</p>
@@ -128,13 +128,9 @@ const AIInsightsPage = () => {
     };
 
     return (
-        <div className="space-y-6 animate-in">
+        <div className="space-y-6 bg-background">
             <PageHeader
-                title={
-                    <span className="flex items-center gap-2">
-                        <Brain className="w-8 h-8 text-indigo-600" /> AI Insights
-                    </span>
-                }
+                title="AI Insights"
                 subtitle="Powered by Google Gemini AI — your intelligent link optimization assistant"
             />
 
@@ -143,7 +139,7 @@ const AIInsightsPage = () => {
                     icon={TrendingUp}
                     title="Analytics Insights"
                     desc="AI analyzes your traffic data and provides actionable optimization recommendations"
-                    color="bg-indigo-600"
+                    color="bg-primary/10"
                     loading={insightsMutation.isPending}
                     onClick={() => insightsMutation.mutate()}
                 />
@@ -151,7 +147,7 @@ const AIInsightsPage = () => {
                     icon={ShieldCheck}
                     title="URL Safety Check"
                     desc="Detect phishing, malware, and spam in any URL before shortening"
-                    color="bg-emerald-600"
+                    color="bg-success/10"
                     loading={checkUrlMutation.isPending}
                     onClick={() => setActiveFeature('url-check')}
                 />
@@ -159,7 +155,7 @@ const AIInsightsPage = () => {
                     icon={BookOpen}
                     title="Content Summarizer"
                     desc="Fetch and summarize any webpage content, extract key insights and tags"
-                    color="bg-purple-600"
+                    color="bg-secondary/10"
                     loading={summarizeMutation.isPending}
                     onClick={() => setActiveFeature('summarize')}
                 />
@@ -167,7 +163,7 @@ const AIInsightsPage = () => {
                     icon={Megaphone}
                     title="Campaign Strategy"
                     desc="Get AI-generated campaign titles, UTM suggestions, and posting schedules"
-                    color="bg-amber-600"
+                    color="bg-warning/10"
                     loading={campaignMutation.isPending}
                     onClick={() => setActiveFeature('campaign')}
                 />
@@ -175,16 +171,14 @@ const AIInsightsPage = () => {
                     icon={Wand2}
                     title="Slug Generator"
                     desc="Generate memorable, brand-friendly short URL aliases using AI"
-                    color="bg-pink-600"
-                    onClick={() => {
-                        window.location.href = '/dashboard/create-link';
-                    }}
+                    color="bg-primary/10"
+                    onClick={() => window.location.href = '/dashboard/create-link'}
                 />
                 <AIFeatureCard
                     icon={MessageCircle}
                     title="AI Chat Assistant"
                     desc="Ask questions about your analytics, get marketing tips, and strategy advice"
-                    color="bg-cyan-600"
+                    color="bg-cyan/10"
                     onClick={() => (isMobile ? setChatSheetOpen(true) : setActiveFeature('chat'))}
                 />
             </div>
@@ -193,7 +187,7 @@ const AIInsightsPage = () => {
                 <button
                     type="button"
                     onClick={() => setChatSheetOpen(true)}
-                    className="fixed right-4 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 lg:hidden touch-target-lg rounded-full bg-cyan-600 text-white shadow-brand-lg flex items-center justify-center"
+                    className="fixed right-4 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 lg:hidden touch-target-lg rounded-full bg-primary text-white shadow-primary-lg flex items-center justify-center"
                     aria-label="Open AI assistant"
                 >
                     <MessageCircle className="w-6 h-6" />
@@ -293,13 +287,10 @@ const AIInsightsPage = () => {
                             disabled={campaignMutation.isPending}
                             className="btn-primary"
                         >
-                            {campaignMutation.isPending ? (
-                                <>
-                                    <Loader2 className="w-4 h-4 animate-spin" /> Generating…
-                                </>
-                            ) : (
-                                'Generate Campaign Strategy'
-                            )}
+                            {campaignMutation.isPending
+                                ? '<Loader2 className="w-4 h-4 animate-spin" /> Generating…'
+                                : 'Generate Campaign Strategy'
+                            }
                         </button>
                     </motion.div>
                 )}
@@ -307,7 +298,7 @@ const AIInsightsPage = () => {
                 {activeFeature === 'chat' && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card overflow-hidden">
                         <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center">
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                                 <Brain className="w-4 h-4 text-white" />
                             </div>
                             <div>
@@ -315,48 +306,27 @@ const AIInsightsPage = () => {
                                 <p className="text-slate-500 text-xs">Powered by Gemini</p>
                             </div>
                         </div>
-                        <div className="h-72 overflow-y-auto p-6 space-y-4 bg-white">
+                        <div className="h-80 overflow-y-auto p-6 space-y-4 bg-white">
                             {chatMessages.map((msg, i) => (
                                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    <div
-                                        className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                                            msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'
-                                        }`}
-                                    >
+                                    <div className={`max-w-[85%] px-4 py-2.5 rounded-2 text-sm leading-relaxed ${msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'}`}>
                                         {msg.message}
                                     </div>
                                 </div>
                             ))}
-                            {chatMutation.isPending && (
-                                <div className="flex justify-start">
-                                    <div className="chat-bubble-assistant px-4 py-2.5 rounded-2xl flex items-center gap-2">
+                            <div className="flex justify-start">
+                                <div className="chat-bubble-assistant px-4 py-2.5 rounded-2 flex items-center gap-2">
+                                    <span className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
                                         {[0, 1, 2].map((i) => (
                                             <div
                                                 key={i}
                                                 className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"
-                                                style={{ animationDelay: `${i * 0.15}s` }}
+                                                style={{ animationDelay: i * 0.15 + 's' }}
                                             />
                                         ))}
-                                    </div>
+                                    </span>
                                 </div>
-                            )}
-                        </div>
-                        <div className="p-4 border-t border-slate-200 flex gap-3 bg-slate-50/50">
-                            <input
-                                value={chatInput}
-                                onChange={(e) => setChatInput(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && sendChat()}
-                                placeholder="Ask anything about your links…"
-                                className="input-field flex-1"
-                            />
-                            <button
-                                type="button"
-                                onClick={sendChat}
-                                disabled={!chatInput.trim() || chatMutation.isPending}
-                                className="btn-primary px-4"
-                            >
-                                <Send className="w-4 h-4" />
-                            </button>
+                            </div>
                         </div>
                     </motion.div>
                 )}
@@ -366,7 +336,7 @@ const AIInsightsPage = () => {
                 <div className="h-[50dvh] overflow-y-auto space-y-4 -mx-1 px-1">
                     {chatMessages.map((msg, i) => (
                         <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-[90%] px-4 py-2.5 rounded-2xl text-sm ${msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'}`}>
+                            <div className={`max-w-[90%] px-4 py-2.5 rounded-2 text-sm ${msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'}`}>
                                 {msg.message}
                             </div>
                         </div>
