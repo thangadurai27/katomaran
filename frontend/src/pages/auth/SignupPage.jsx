@@ -12,11 +12,16 @@ const SignupPage = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const { signup, isLoading } = useAuthStore();
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors }, getValues } = useForm({
         mode: 'onChange',
     });
 
     const onSubmit = async (data) => {
+        // Cross-field validation: confirm password must match
+        if (data.password !== data.confirmPassword) {
+            toast.error('Passwords do not match');
+            return;
+        }
         const { name, email, password } = data;
         const result = await signup({ name, email, password });
         if (result.success) {
@@ -112,7 +117,7 @@ const SignupPage = () => {
                                     id="confirmPassword"
                                     {...register('confirmPassword', {
                                         required: 'Please confirm your password',
-                                        validate: (value) => value === data?.password || 'Passwords do not match',
+                                        validate: (value) => value === getValues('password') || 'Passwords do not match',
                                     })}
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     placeholder="Confirm your password"

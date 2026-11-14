@@ -3,20 +3,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuthStore } from '@/stores/authStore';
 import { Input, Button } from '@/components/ui';
 import { Zap, Eye, EyeOff, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+const zodSchema = z.object({
+    email: z.string().email('Please enter a valid email'),
+    password: z.string().min(8, 'Password must be at least 8 characters')
+});
+
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { login, isLoading } = useAuthStore();
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm();
-
-    const zodSchema = z.object({
-        email: z.string().email('Please enter a valid email'),
-        password: z.string().min(8, 'Password must be at least 8 characters')
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: zodResolver(zodSchema),
     });
 
     const onSubmit = async (data) => {
@@ -59,8 +62,8 @@ const LoginPage = () => {
                             <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
                             <Input
                                 id="email"
-                                type="email"
                                 {...register('email')}
+                                type="email"
                                 placeholder="you@example.com"
                                 className="input-field w-full"
                                 autoComplete="email"
@@ -73,8 +76,8 @@ const LoginPage = () => {
                             <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
                             <Input
                                 id="password"
-                                type={showPassword ? 'text' : 'password'}
                                 {...register('password')}
+                                type={showPassword ? 'text' : 'password'}
                                 placeholder="••••••••"
                                 className="input-field w-full pr-16"
                                 autoComplete="current-password"
