@@ -2,15 +2,22 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { z } from 'zod';
 import { useAuthStore } from '@/stores/authStore';
 import { Input, Button } from '@/components/ui';
-import { Zap, Eye, EyeOff } from 'lucide-react';
+import { Zap, Eye, EyeOff, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { login, isLoading } = useAuthStore();
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const zodSchema = z.object({
+        email: z.string().email('Please enter a valid email'),
+        password: z.string().min(8, 'Password must be at least 8 characters')
+    });
 
     const onSubmit = async (data) => {
         const result = await login(data);
@@ -38,8 +45,8 @@ const LoginPage = () => {
                 </ul>
             </nav>
 
-            <main class="flex-1 flex items-center justify-center py-12 px-4 bg-background">
-                <Container maxW="420" className="auth-card p-8 sm:p-12 max-w-full">
+            <main className="flex-1 flex items-center justify-center py-12 px-4 bg-background">
+                <div className="auth-card p-8 sm:p-12 max-w-[420px] w-full mx-auto">
                     <div className="text-center mb-8">
                         <Zap className="w-10 h-10 mx-auto mb-4 bg-primary/10 rounded-xl flex items-center justify-center" strokeWidth={2} />
                         <h1 className="text-3xl font-bold font-display text-primary-text mb-2">Welcome back</h1>
@@ -49,7 +56,7 @@ const LoginPage = () => {
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         {/* Email */}
                         <div>
-                            <InputLabel htmlFor="email">Email address</InputLabel>
+                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
                             <Input
                                 id="email"
                                 type="email"
@@ -58,17 +65,17 @@ const LoginPage = () => {
                                 className="input-field w-full"
                                 autoComplete="email"
                             />
-                            {errors.email && <p className="text-danger text-sm mt-1.5">⚠ {errors.email.message}</p>}
+                            {errors.email && <p className="text-danger text-sm mt-1.5">{errors.email.message}</p>}
                         </div>
 
                         {/* Password */}
                         <div className="relative">
-                            <InputLabel htmlFor="password">Password</InputLabel>
+                            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
                             <Input
                                 id="password"
                                 type={showPassword ? 'text' : 'password'}
                                 {...register('password')}
-                                placeholder="••••••••••"
+                                placeholder="••••••••"
                                 className="input-field w-full pr-16"
                                 autoComplete="current-password"
                             />
@@ -81,10 +88,10 @@ const LoginPage = () => {
                                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </button>
                         </div>
-                        {errors.password && <p className="text-danger text-sm mt-1.5">⚠ {errors.password.message}</p>}
+                        {errors.password && <p className="text-danger text-sm mt-1.5">{errors.password.message}</p>}
 
                         {/* Remember & Forgot */}
-                        <div className="flex items-between text-xs text-secondary-text">
+                        <div className="flex items-center justify-between text-xs text-secondary-text">
                             <label className="flex items-center gap-2 cursor-pointer select-none">
                                 <input type="checkbox" {...register('rememberMe')} className="w-4 h-4 rounded border-primary focus:ring-primary" />
                                 Remember me
@@ -94,10 +101,7 @@ const LoginPage = () => {
 
                         {/* Submit */}
                         <Button type="submit" disabled={isLoading} className="w-full">
-                            {isLoading
-                                ? '<Loader2 className="mr-2 animate-spin" /> Signing in...'
-                                : 'Sign in →'
-                            }
+                            {isLoading ? (<><Loader2 className="mr-2 animate-spin" /> Signing in...</>) : 'Sign in →'}
                         </Button>
                     </form>
 
@@ -105,18 +109,10 @@ const LoginPage = () => {
                     <p className="text-center text-sm mt-6 text-secondary-text">
                         Don't have an account? <Link to="/signup" className="font-medium hover:underline text-primary">Sign up free</Link>
                     </p>
-                </Container>
+                </div>
             </main>
         </div>
     );
 };
-
-// Zod schema for form validation
-const zodSchema = z.object({
-    email: z.string().email('Please enter a valid email'),
-    password: z.string().min(8, 'Password must be at least 8 characters')
-});
-
-LoginPage.schema = zodSchema;
 
 export default LoginPage;

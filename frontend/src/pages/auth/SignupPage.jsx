@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useState as useUseState } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import { Container } from '@/components/layout';
 import { Input, Button } from '@/components/ui';
-import { Zap, Eye, EyeOff } from 'lucide-react';
+import { Zap, Eye, EyeOff, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const SignupPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const { signup, isLoading } = useAuthStore();
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors} } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = async ({ name, email, password }) => {
         const result = await signup({ name, email, password });
@@ -44,14 +44,14 @@ const SignupPage = () => {
                 <Container maxW="420" className="auth-card w-full p-8 sm:p-12 max-w-full">
                     <div className="text-center mb-8">
                         <Zap className="w-10 h-10 mx-auto mb-4 bg-primary/10 rounded-xl flex items-center justify-center" strokeWidth={2} />
-                        <h1 className="text-3x font-bold font-display text-primary-text mb-2">Create account</h1>
+                        <h1 className="text-3xl font-bold font-display text-primary-text mb-2">Create account</h1>
                         <p className="text-secondary-text">Start for free — no credit card required</p>
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         {/* Name */}
                         <div className="space-y-2">
-                            <InputLabel htmlFor="name">Full Name</InputLabel>
+                            <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
                             <Input
                                 id="name"
                                 {...register('name')}
@@ -60,12 +60,12 @@ const SignupPage = () => {
                                 className="input-field w-full"
                                 autoComplete="name"
                             />
-                            {errors.name && <p className="text-danger text-sm mt-0.5">⚠ {errors.name.message}</p>}
+                            {errors.name && <p className="text-danger text-sm mt-0.5">{errors.name.message}</p>}
                         </div>
 
                         {/* Email */}
                         <div className="space-y-2">
-                            <InputLabel htmlFor="email">Email address</InputLabel>
+                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
                             <Input
                                 id="email"
                                 {...register('email')}
@@ -74,13 +74,13 @@ const SignupPage = () => {
                                 className="input-field w-full"
                                 autoComplete="email"
                             />
-                            {errors.email && <p className="text-danger text-sm mt-0.5">⚠ {errors.email.message}</p>}
+                            {errors.email && <p className="text-danger text-sm mt-0.5">{errors.email.message}</p>}
                         </div>
 
                         {/* Password */}
                         <div className="space-y-2">
                             <div className="relative">
-                                <InputLabel htmlFor="password">Password</InputLabel>
+                                <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
                                 <Input
                                     id="password"
                                     {...register('password')}
@@ -98,18 +98,18 @@ const SignupPage = () => {
                                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
-                            {errors.password && <p className="text-danger text-sm mt-0.5">⚠ {errors.password.message}</p>}
+                            {errors.password && <p className="text-danger text-sm mt-0.5">{errors.password.message}</p>}
                         </div>
 
                         {/* Confirm Password */}
                         <div className="space-y-2">
                             <div className="relative">
-                                <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
+                                <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
                                 <Input
                                     id="confirmPassword"
                                     {...register('confirmPassword')}
                                     type={showConfirmPassword ? 'text' : 'password'}
-                                    placeholder="••••••••••"
+                                    placeholder="••••••••"
                                     className="input-field w-full pr-16"
                                     autoComplete="new-password"
                                 />
@@ -122,7 +122,7 @@ const SignupPage = () => {
                                     {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
-                            {errors.confirmPassword && <p className="text-danger text-sm mt-0.5">⚠ {errors.confirmPassword.message}</p>}
+                            {errors.confirmPassword && <p className="text-danger text-sm mt-0.5">{errors.confirmPassword.message}</p>}
                         </div>
 
                         {/* Terms */}
@@ -132,10 +132,7 @@ const SignupPage = () => {
 
                         {/* Submit */}
                         <Button type="submit" disabled={isLoading} className="w-full">
-                            {isLoading
-                                ? '<Loader2 className="mr-2 animate-spin" /> Creating account...'
-                                : 'Get started free →'
-                            }
+                            {isLoading ? (<><Loader2 className="mr-2 animate-spin" /> Creating account...</>) : 'Get started free →'}
                         </Button>
                     </form>
 
