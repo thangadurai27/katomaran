@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Globe, Monitor, TrendingUp, Users, Compass, BarChart3 } from 'lucide-react';
+import { Globe, Monitor, TrendingUp, Users, Compass, BarChart2 } from 'lucide-react';
 import api from '@/lib/api';
 import { format } from 'date-fns';
 import PageHeader from '@/components/ui/PageHeader';
@@ -182,7 +182,7 @@ const AnalyticsPage = () => {
                         </ResponsiveChart>
                     ) : (
                         <div className="chart-empty min-h-[220px]">
-                            <BarChart3 className="w-10 h-10 mb-3 opacity-40 text-primary" />
+                            <BarChart2 className="w-10 h-10 mb-3 opacity-40 text-primary" />
                             <p className="text-sm font-medium text-slate-500">No click data yet</p>
                             <p className="text-xs chart-muted mt-1">Create links and share them to see trends here</p>
                         </div>
