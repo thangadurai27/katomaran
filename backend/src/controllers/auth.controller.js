@@ -7,6 +7,19 @@ const { success, error } = require('../utils/apiResponse');
 
 const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
+// Validate required JWT environment variables are present
+const validateJwtEnv = () => {
+    const missing = [];
+    if (!process.env.JWT_SECRET) missing.push('JWT_SECRET');
+    if (!process.env.JWT_REFRESH_SECRET) missing.push('JWT_REFRESH_SECRET');
+    if (missing.length > 0) {
+        const err = new Error(`Missing required environment variables: ${missing.join(', ')}`);
+        err.statusCode = 500;
+        err.code = 'MISSING_JWT_SECRET';
+        throw err;
+    }
+};
+
 const setAuthCookies = (res, accessToken, refreshToken) => {
     const cookieOptions = {
         httpOnly: true,
@@ -28,6 +41,25 @@ const queueVerificationEmail = (user, verificationToken) => {
 const signup = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const ip = getClientIP(req);
+
+    // Validate required fields
+    if (!name || !email || !password) {
+        return error(res, 'Name, email, and password are required.', 400);
+    }
+
+    // Validate email format
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    if (!emailRegex.test(email)) {
+        return error(res, 'Please enter a valid email address.', 400);
+    }
+
+    // Validate password strength
+    if (password.length < 8) {
+        return error(res, 'Password must be at least 8 characters.', 400);
+    }
+
+    // Validate JWT environment variables before signing tokens
+    validateJwtEnv();
 
     if (await User.exists({ email })) {
         return error(res, 'Email already in use. Please login or use a different email.', 409);
