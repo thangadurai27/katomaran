@@ -12,9 +12,12 @@ const SignupPage = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const { signup, isLoading } = useAuthStore();
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        mode: 'onChange',
+    });
 
-    const onSubmit = async ({ name, email, password }) => {
+    const onSubmit = async (data) => {
+        const { name, email, password } = data;
         const result = await signup({ name, email, password });
         if (result.success) {
             navigate('/dashboard/overview', { replace: true });
@@ -54,7 +57,7 @@ const SignupPage = () => {
                             <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
                             <Input
                                 id="name"
-                                {...register('name')}
+                                {...register('name', { required: 'Full name is required' })}
                                 type="text"
                                 placeholder="John Doe"
                                 className="input-field w-full"
@@ -68,7 +71,7 @@ const SignupPage = () => {
                             <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
                             <Input
                                 id="email"
-                                {...register('email')}
+                                {...register('email', { required: 'Email is required', pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email address' } })}
                                 type="email"
                                 placeholder="you@example.com"
                                 className="input-field w-full"
@@ -83,9 +86,9 @@ const SignupPage = () => {
                                 <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
                                 <Input
                                     id="password"
-                                    {...register('password')}
+                                    {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters' } })}
                                     type={showPassword ? 'text' : 'password'}
-                                    placeholder="8+ characters with numbers"
+                                    placeholder="8+ characters"
                                     className="input-field w-full pr-16"
                                     autoComplete="new-password"
                                 />
@@ -107,9 +110,12 @@ const SignupPage = () => {
                                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
                                 <Input
                                     id="confirmPassword"
-                                    {...register('confirmPassword')}
+                                    {...register('confirmPassword', {
+                                        required: 'Please confirm your password',
+                                        validate: (value) => value === data?.password || 'Passwords do not match',
+                                    })}
                                     type={showConfirmPassword ? 'text' : 'password'}
-                                    placeholder="••••••••"
+                                    placeholder="Confirm your password"
                                     className="input-field w-full pr-16"
                                     autoComplete="new-password"
                                 />
