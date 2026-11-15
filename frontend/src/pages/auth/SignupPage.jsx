@@ -17,11 +17,6 @@ const SignupPage = () => {
     });
 
     const onSubmit = async (data) => {
-        // Cross-field validation: confirm password must match
-        if (data.password !== data.confirmPassword) {
-            toast.error('Passwords do not match');
-            return;
-        }
         const { name, email, password } = data;
         const result = await signup({ name, email, password });
         if (result.success) {
