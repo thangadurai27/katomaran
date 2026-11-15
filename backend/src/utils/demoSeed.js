@@ -189,6 +189,7 @@ const ensureDemoUser = async () => {
             // earlier signup or a changed password made the credentials drift,
             // reclaim it so "Try Demo Account" always works.
             user.password = DEMO_PASSWORD;
+            user.name = 'Demo User';
             user.isDemo = true;
             user.isActive = true;
             user.isBanned = false;
