@@ -12,12 +12,17 @@ const TeamPage = () => {
     const [newMemberRole, setNewMemberRole] = useState('member');
     const [invitingEmail, setInvitingEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const { data: teamStats, isLoading: statsLoading } = useQuery({
+    const { data: teamStats } = useQuery({
         queryKey: ['team-stats'],
         queryFn: async () => {
-            const { data } = await api.get('/team/stats');
-            return data.data;
-        }
+            try {
+                const { data } = await api.get('/team/stats');
+                return data.data;
+            } catch {
+                return null;
+            }
+        },
+        retry: false,
     });
 
     const addMember = async () => {
