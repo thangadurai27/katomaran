@@ -18,7 +18,8 @@ const NotificationsPage = () => {
         queryFn: async () => {
             const { data } = await api.get('/notifications');
             return data.data;
-        }
+        },
+        refetchInterval: 30000
     });
 
     const markAllMutation = useMutation({

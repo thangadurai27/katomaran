@@ -1,6 +1,7 @@
 const qrcode = require('qrcode');
 const Link = require('../models/Link.model');
 const { success, error } = require('../utils/apiResponse');
+const { createNotification } = require('../utils/notification.helper');
 
 const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
@@ -9,7 +10,12 @@ const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, ne
 const generateQR = asyncHandler(async (req, res) => {
     const { url, linkId, options = {} } = req.body;
 
-    const targetUrl = url || (linkId ? `${process.env.SHORT_URL_BASE}${linkId}` : null);
+    let targetUrl = url;
+    if (!targetUrl && linkId) {
+        const link = await Link.findOne({ _id: linkId, user: req.user._id });
+        if (!link) return error(res, 'Link not found.', 404);
+        targetUrl = `${process.env.SHORT_URL_BASE}${link.shortCode}`;
+    }
     if (!targetUrl) return error(res, 'URL or link ID required.', 400);
 
     const qrOptions = {
@@ -38,6 +44,16 @@ const generateQR = asyncHandler(async (req, res) => {
             await User.findByIdAndUpdate(req.user._id, { $inc: { 'stats.totalQRGenerated': 1 } });
         }
     }
+
+    await createNotification({
+        userId: req.user._id,
+        type: 'system',
+        title: 'QR code generated',
+        message: `QR code for ${targetUrl} is ready.`,
+        data: { url: targetUrl },
+        link: `/dashboard/qr-center`,
+        priority: 'low',
+    });
 
     return success(res, 'QR code generated.', { qrCode: qrDataUrl, url: targetUrl });
 });

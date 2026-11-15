@@ -3,6 +3,7 @@ const Visit = require('../models/Visit.model');
 const Campaign = require('../models/Campaign.model');
 const ActivityLog = require('../models/ActivityLog.model');
 const { success, error, paginated } = require('../utils/apiResponse');
+const { createNotification } = require('../utils/notification.helper');
 const { getClientIP, parseUserAgent, getGeoData, detectBot, hashIP, getPaginationOptions, buildPaginationMeta, isValidUrl } = require('../utils/helpers');
 const { generateContent } = require('../configs/gemini');
 const qrcode = require('qrcode');
@@ -122,6 +123,16 @@ URL: ${originalUrl}
 
     await ActivityLog.create({ user: req.user._id, action: 'link_created', description: `Created short link: ${link.shortCode}`, metadata: { linkId: link._id } });
 
+    await createNotification({
+        userId: req.user._id,
+        type: 'system',
+        title: 'Link created',
+        message: `Short link /${link.shortCode} was created successfully.`,
+        data: { linkId: link._id, shortCode: link.shortCode },
+        link: `/dashboard/links`,
+        priority: 'low',
+    });
+
     // Emit socket event
     const io = req.app.get('io');
     if (io) io.to(`user:${req.user._id}`).emit('link:created', link);
@@ -179,13 +190,26 @@ const updateLink = asyncHandler(async (req, res) => {
     const link = await Link.findOne({ _id: req.params.id, user: req.user._id });
     if (!link) return error(res, 'Link not found.', 404);
 
-    const allowedFields = ['title', 'description', 'originalUrl', 'tags', 'expiresAt', 'isActive', 'utmParams', 'deepLink', 'geoRestrictions', 'isFavorited', 'isPinned'];
+    const wasTrashed = link.isTrashed;
+    const allowedFields = ['title', 'description', 'originalUrl', 'tags', 'expiresAt', 'isActive', 'isTrashed', 'utmParams', 'deepLink', 'geoRestrictions', 'isFavorited', 'isPinned'];
     allowedFields.forEach(field => {
         if (req.body[field] !== undefined) link[field] = req.body[field];
     });
 
     await link.save();
     await ActivityLog.create({ user: req.user._id, action: 'link_updated', description: `Updated link: ${link.shortCode}` });
+
+    if (wasTrashed && link.isTrashed === false) {
+        await createNotification({
+            userId: req.user._id,
+            type: 'system',
+            title: 'Link restored',
+            message: `/${link.shortCode} was restored from trash.`,
+            data: { linkId: link._id, shortCode: link.shortCode },
+            link: `/dashboard/links`,
+            priority: 'low',
+        });
+    }
 
     return success(res, 'Link updated successfully.', { link });
 });
@@ -205,6 +229,16 @@ const deleteLink = asyncHandler(async (req, res) => {
 
     await Link.findByIdAndUpdate(link._id, { isTrashed: true, isActive: false });
     await ActivityLog.create({ user: req.user._id, action: 'link_deleted', description: `Moved link to trash: ${link.shortCode}` });
+
+    await createNotification({
+        userId: req.user._id,
+        type: 'system',
+        title: 'Link moved to trash',
+        message: `/${link.shortCode} was moved to trash.`,
+        data: { linkId: link._id, shortCode: link.shortCode },
+        link: `/dashboard/trash`,
+        priority: 'low',
+    });
     return success(res, 'Link moved to trash.');
 });
 

@@ -8,7 +8,6 @@ import {
     QrCode,
     Layers,
     Megaphone,
-    Globe2,
     Users,
     Bell,
     User,
@@ -39,7 +38,7 @@ export const navigationGroups = [
             { label: 'QR Center', icon: QrCode, path: '/dashboard/qr-center' },
             { label: 'Bulk Shortener', icon: Layers, path: '/dashboard/bulk-shortener' },
             { label: 'Campaigns', icon: Megaphone, path: '/dashboard/campaigns' },
-            { label: 'Public Pages', icon: Globe2, path: '/dashboard/public-pages' },
+
         ],
     },
     {

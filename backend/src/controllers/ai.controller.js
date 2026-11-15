@@ -83,7 +83,12 @@ Provide a JSON response (no markdown):
 
     const result = await generateContent(prompt);
     const cleaned = result.replace(/```json\n?|\n?```/g, '').trim();
-    const insights = JSON.parse(cleaned);
+    let insights;
+    try {
+        insights = JSON.parse(cleaned);
+    } catch {
+        return error(res, result || 'AI response could not be parsed. Please try again.', 502);
+    }
 
     return success(res, 'AI insights generated.', { insights });
 });

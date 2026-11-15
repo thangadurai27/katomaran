@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Wand2, ShieldCheck, TrendingUp, MessageCircle, BookOpen, Megaphone, Loader2, Send, Sparkles } from 'lucide-react';
+import { Brain, Wand2, ShieldCheck, TrendingUp, MessageCircle, BookOpen, Megaphone, Loader2, Send, Sparkles, Copy, RotateCcw } from 'lucide-react';
 import api from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import PageHeader from '@/components/ui/PageHeader';
@@ -122,9 +122,28 @@ const AIInsightsPage = () => {
 
     const sendChat = () => {
         if (!chatInput.trim()) return;
-        setChatMessages((prev) => [...prev, { role: 'user', message: chatInput }]);
-        chatMutation.mutate(chatInput);
+        const message = chatInput.trim();
+        setChatMessages((prev) => [...prev, { role: 'user', message }]);
+        chatMutation.mutate(message);
         setChatInput('');
+    };
+
+    const clearChat = () => {
+        setChatMessages([
+            {
+                role: 'assistant',
+                message: "Hi! I'm your SnapLink AI assistant. Ask me anything about your links, analytics, or marketing strategy!",
+            },
+        ]);
+    };
+
+    const copyMessage = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            toast.success('Copied');
+        } catch {
+            toast.error('Copy failed');
+        }
     };
 
     return (
@@ -287,46 +306,71 @@ const AIInsightsPage = () => {
                             disabled={campaignMutation.isPending}
                             className="btn-primary"
                         >
-                            {campaignMutation.isPending
-                                ? '<Loader2 className="w-4 h-4 animate-spin" /> Generating…'
-                                : 'Generate Campaign Strategy'
-                            }
+                            {campaignMutation.isPending ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 animate-spin" /> Generating…
+                                </>
+                            ) : (
+                                'Generate Campaign Strategy'
+                            )}
                         </button>
                     </motion.div>
                 )}
 
                 {activeFeature === 'chat' && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card overflow-hidden">
-                        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                                <Brain className="w-4 h-4 text-white" />
+                        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                                    <Brain className="w-4 h-4 text-white" />
+                                </div>
+                                <div>
+                                    <p className="text-slate-900 font-semibold text-sm">SnapLink AI Assistant</p>
+                                    <p className="text-slate-500 text-xs">Powered by Gemini</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-slate-900 font-semibold text-sm">SnapLink AI Assistant</p>
-                                <p className="text-slate-500 text-xs">Powered by Gemini</p>
-                            </div>
+                            <button type="button" onClick={clearChat} className="btn-ghost text-xs gap-1.5">
+                                <RotateCcw className="w-3.5 h-3.5" /> Clear
+                            </button>
                         </div>
                         <div className="h-80 overflow-y-auto p-6 space-y-4 bg-white">
                             {chatMessages.map((msg, i) => (
                                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[85%] px-4 py-2.5 rounded-2 text-sm leading-relaxed ${msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'}`}>
+                                    <div className={`group relative max-w-[85%] px-4 py-2.5 rounded-2 text-sm leading-relaxed ${msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'}`}>
                                         {msg.message}
+                                        {msg.role === 'assistant' && (
+                                            <button
+                                                type="button"
+                                                onClick={() => copyMessage(msg.message)}
+                                                className="absolute -right-2 -top-2 hidden rounded-full bg-white p-1 shadow group-hover:block"
+                                                aria-label="Copy response"
+                                            >
+                                                <Copy className="w-3 h-3 text-slate-500" />
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             ))}
-                            <div className="flex justify-start">
-                                <div className="chat-bubble-assistant px-4 py-2.5 rounded-2 flex items-center gap-2">
-                                    <span className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
-                                        {[0, 1, 2].map((i) => (
-                                            <div
-                                                key={i}
-                                                className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"
-                                                style={{ animationDelay: i * 0.15 + 's' }}
-                                            />
-                                        ))}
-                                    </span>
+                            {chatMutation.isPending && (
+                                <div className="flex justify-start">
+                                    <div className="chat-bubble-assistant px-4 py-2.5 rounded-2 flex items-center gap-2">
+                                        <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
+                                        <span className="text-xs text-slate-500">Thinking…</span>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+                        </div>
+                        <div className="flex gap-2 border-t border-slate-200 p-4">
+                            <input
+                                value={chatInput}
+                                onChange={(e) => setChatInput(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && sendChat()}
+                                placeholder="Ask about your links…"
+                                className="input-field flex-1"
+                            />
+                            <button type="button" onClick={sendChat} disabled={!chatInput.trim() || chatMutation.isPending} className="btn-primary px-4 touch-target">
+                                <Send className="w-4 h-4" />
+                            </button>
                         </div>
                     </motion.div>
                 )}

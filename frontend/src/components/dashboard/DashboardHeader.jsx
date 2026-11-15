@@ -4,12 +4,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Search, Menu, LogOut, User, Settings, ChevronDown, Zap } from 'lucide-react';
 import useAuthStore from '@/stores/authStore';
 import useUIStore from '@/stores/uiStore';
+import { useQuery } from '@tanstack/react-query';
+import api from '@/lib/api';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import toast from 'react-hot-toast';
 
 const DashboardHeader = () => {
     const { user, logout } = useAuthStore();
     const { setSidebarOpen } = useUIStore();
+    const { data: notificationData } = useQuery({
+        queryKey: ['notifications'],
+        queryFn: async () => {
+            const { data } = await api.get('/notifications');
+            return data.data;
+        },
+        refetchInterval: 30000,
+    });
+    const unreadCount = notificationData?.unreadCount || 0;
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
     const navigate = useNavigate();
@@ -90,7 +101,11 @@ const DashboardHeader = () => {
                         aria-label="Notifications"
                     >
                         <Bell className="h-[19px] w-[19px]" />
-                        <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-[#8B5CF6] ring-2 ring-[var(--bg-surface)]" />
+                        {unreadCount > 0 && (
+                            <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-[16px] place-items-center rounded-full bg-[#8B5CF6] px-1 text-[9px] font-bold text-white ring-2 ring-[var(--bg-surface)]">
+                                {unreadCount > 9 ? '9+' : unreadCount}
+                            </span>
+                        )}
                     </Link>
 
                     <div className="relative" ref={menuRef}>

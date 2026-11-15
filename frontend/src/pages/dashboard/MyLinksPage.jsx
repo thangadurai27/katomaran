@@ -151,7 +151,7 @@ const MyLinksPage = () => {
             if (filter === 'favorites') params.favorites = true;
             if (filter === 'archived') params.archived = true;
             const { data: res } = await api.get('/links', { params });
-            return res.data;
+            return res;
         },
         keepPreviousData: true
     });

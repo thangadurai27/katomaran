@@ -36,7 +36,6 @@ const AIInsightsPage = lazyWithRetry(() => import('@/pages/dashboard/AIInsightsP
 const QRCenterPage = lazyWithRetry(() => import('@/pages/dashboard/QRCenterPage'));
 const CampaignsPage = lazyWithRetry(() => import('@/pages/dashboard/CampaignsPage'));
 const TeamPage = lazyWithRetry(() => import('@/pages/dashboard/TeamPage'));
-const PublicPagesPage = lazyWithRetry(() => import('@/pages/dashboard/PublicPagesPage'));
 const BulkShortenerPage = lazyWithRetry(() => import('@/pages/dashboard/BulkShortenerPage'));
 const ExportCenterPage = lazyWithRetry(() => import('@/pages/dashboard/ExportCenterPage'));
 const ActivityLogsPage = lazyWithRetry(() => import('@/pages/dashboard/ActivityLogsPage'));
@@ -47,7 +46,6 @@ const TrashPage = lazyWithRetry(() => import('@/pages/dashboard/TrashPage'));
 const AdminPage = lazyWithRetry(() => import('@/pages/dashboard/AdminPage'));
 
 // Public smart pages
-const BioPage = lazyWithRetry(() => import('@/pages/public/BioPage'));
 const PublicStatsPage = lazyWithRetry(() => import('@/pages/public/PublicStatsPage'));
 const NotFoundPage = lazyWithRetry(() => import('@/pages/public/NotFoundPage'));
 
@@ -115,9 +113,7 @@ function AppRoutes() {
           <Route path="/reset-password/:token" element={<GuestRoute><ResetPasswordPage /></GuestRoute>} />
 
           {/* Public Smart Pages */}
-          <Route path="/u/:username" element={<BioPage />} />
           <Route path="/stats/:shortCode" element={<PublicStatsPage />} />
-
           {/* Dashboard Routes */}
           <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
             <Route index element={<Navigate to="/dashboard/overview" replace />} />
@@ -132,7 +128,6 @@ function AppRoutes() {
             <Route path="campaigns" element={<CampaignsPage />} />
             <Route path="team" element={<TeamPage />} />
             <Route path="team-collaboration" element={<TeamPage />} />
-            <Route path="public-pages" element={<PublicPagesPage />} />
             <Route path="bulk-shortener" element={<BulkShortenerPage />} />
             <Route path="export-center" element={<ExportCenterPage />} />
             <Route path="activity-logs" element={<ActivityLogsPage />} />

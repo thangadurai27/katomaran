@@ -45,13 +45,7 @@ const FEATURES = [
         color: 'text-pink-400',
         bg: 'bg-pink-500/10 border-pink-500/20'
     },
-    {
-        icon: Globe,
-        title: 'Public Bio Pages',
-        desc: 'Create beautiful Linktree-style mobile landing pages. Customize themes, add social links, and track tap-through rates.',
-        color: 'text-indigo-400',
-        bg: 'bg-indigo-500/10 border-indigo-500/20'
-    },
+
     {
         icon: Zap,
         title: 'Developer API',
