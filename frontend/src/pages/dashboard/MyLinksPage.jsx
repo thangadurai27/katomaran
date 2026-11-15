@@ -206,7 +206,7 @@ const MyLinksPage = () => {
         <div className="space-y-6 bg-background">
             <PageHeader
                 title="My Links"
-                subtitle={`${pagination.total || 0} total links`}
+                subtitle={`${(pagination.total || 0).toLocaleString()} total links`}
                 action={
                     <Link to="/dashboard/create-link" className="btn-primary">
                         <Plus className="w-4 h-4" /> New Link

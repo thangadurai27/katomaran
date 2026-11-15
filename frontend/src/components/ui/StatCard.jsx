@@ -55,6 +55,8 @@ const StatCard = ({
     const hasChange = change !== undefined && change !== null && Number.isFinite(Number(change));
     const changeValue = Number(change);
     const positive = changeValue >= 0;
+    const displayValue =
+        typeof value === 'number' ? new Intl.NumberFormat('en-US').format(value) : (value ?? 0);
 
     return (
         <div
@@ -83,7 +85,7 @@ const StatCard = ({
                         <div className="skeleton mt-2 h-7 w-24 rounded-md" />
                     ) : (
                         <p className="mt-0.5 truncate font-display text-[26px] font-extrabold leading-tight tracking-tight text-[var(--text-primary)] sm:text-[28px]">
-                            {value ?? 0}
+                            {displayValue}
                         </p>
                     )}
 
