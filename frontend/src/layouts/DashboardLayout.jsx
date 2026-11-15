@@ -14,7 +14,7 @@ import { io } from 'socket.io-client';
 import { BASE_URL } from '@/config/env';
 
 const DashboardLayout = () => {
-    const { sidebarOpen, setSidebarOpen } = useUIStore();
+    const { sidebarOpen, setSidebarOpen, sidebarCollapsed } = useUIStore();
     const { accessToken } = useAuthStore();
     const isMobile = useIsMobile();
     const location = useLocation();
@@ -69,7 +69,7 @@ const DashboardLayout = () => {
                 />
             )}
 
-            <div className="flex min-h-screen-safe min-w-0 flex-col lg:pl-[272px]">
+            <div className={`flex min-h-screen-safe min-w-0 flex-col transition-[padding] duration-300 ${sidebarCollapsed ? 'lg:pl-[72px]' : 'lg:pl-[250px]'}`}>
                 <DashboardHeader />
 
                 <main className="dashboard-main dashboard-surface dashboard-canvas px-4 py-6 sm:px-6 lg:px-8 lg:py-8">

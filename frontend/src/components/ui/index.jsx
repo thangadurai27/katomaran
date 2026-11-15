@@ -8,3 +8,4 @@ export { default as PageTransition } from './PageTransition';
 export { default as ResponsiveChart } from './ResponsiveChart';
 export { default as ThemeToggle } from './ThemeToggle';
 export { default as StatCard } from './StatCard';
+export { default as PlaceholderPage } from './PlaceholderPage';
