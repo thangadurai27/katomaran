@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-label="SnapLink AI architecture: React frontend on Vercel, Express backend on Render, MongoDB Atlas, Gemini AI, Socket.io realtime layer">
+  <defs>
+    <linearGradient id="rbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF8FE"/>
+      <stop offset="100%" stop-color="#EFE9FA"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+  <rect width="960" height="560" rx="18" fill="url(#rbg)"/>
+  <style>
+    .box { fill: #FFFFFF; stroke: #DDD3F5; rx: 14; }
+    .ttl { font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #17153A; }
+    .sub { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #6B6485; }
+    .flow { stroke: #7C3AED; stroke-width: 2.5; fill: none; marker-end: url(#arr); }
+    .lbl { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #7C3AED; font-weight: 600; }
+  </style>
+
+  <!-- Client -->
+  <g transform="translate(60,70)">
+    <rect class="box" width="200" height="110" rx="14"/>
+    <text class="ttl" x="20" y="32">User / Browser</text>
+    <text class="sub" x="20" y="54">PWA (installable)</text>
+    <text class="sub" x="20" y="72">Service Worker caching</text>
+    <text class="sub" x="20" y="90">React 19 + Zustand store</text>
+  </g>
+
+  <!-- Frontend -->
+  <g transform="translate(360,50)">
+    <rect class="box" width="240" height="150" rx="14"/>
+    <rect width="240" height="34" rx="14" fill="#7C3AED"/>
+    <text x="20" y="22" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">React Frontend (Vercel)</text>
+    <text class="sub" x="20" y="58">Vite build → static dist</text>
+    <text class="sub" x="20" y="76">React Router (SPA rewrites)</text>
+    <text class="sub" x="20" y="94">TanStack Query + Recharts</text>
+    <text class="sub" x="20" y="112">Tailwind CSS + Framer Motion</text>
+    <text class="sub" x="20" y="130">socket.io-client (live updates)</text>
+  </g>
+
+  <!-- Backend -->
+  <g transform="translate(360,260)">
+    <rect class="box" width="240" height="170" rx="14"/>
+    <rect width="240" height="34" rx="14" fill="#5B21B6"/>
+    <text x="20" y="22" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Express API (Render)</text>
+    <text class="sub" x="20" y="58">REST API + JWT auth</text>
+    <text class="sub" x="20" y="76">/r/:code redirect engine</text>
+    <text class="sub" x="20" y="94">Socket.io websocket server</text>
+    <text class="sub" x="20" y="112">Rate limiting · Helmet · CORS</text>
+    <text class="sub" x="20" y="130">Demo account auto-seed</text>
+    <text class="sub" x="20" y="148">geoip-lite · qrcode · nodemailer</text>
+  </g>
+
+  <!-- MongoDB -->
+  <g transform="translate(700,120)">
+    <rect class="box" width="200" height="120" rx="14"/>
+    <rect width="200" height="34" rx="14" fill="#0E7A4B"/>
+    <text x="20" y="22" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">MongoDB Atlas</text>
+    <text class="sub" x="20" y="58">Users · Links · Visits</text>
+    <text class="sub" x="20" y="76">Campaigns · Teams · QR</text>
+    <text class="sub" x="20" y="94">Notifications · Activity</text>
+    <text class="sub" x="20" y="112">Mongoose ODM models</text>
+  </g>
+
+  <!-- Gemini -->
+  <g transform="translate(700,330)">
+    <rect class="box" width="200" height="100" rx="14"/>
+    <rect width="200" height="34" rx="14" fill="#8B5CF6"/>
+    <text x="20" y="22" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Google Gemini</text>
+    <text class="sub" x="20" y="58">gemini-2.5-flash</text>
+    <text class="sub" x="20" y="76">insights · chat · slug ideas</text>
+    <text class="sub" x="20" y="94">URL safety checks</text>
+  </g>
+
+  <!-- flows -->
+  <path class="flow" d="M262 120 C 310 110, 330 110, 356 118"/>
+  <path class="flow" d="M480 202 L 480 256"/>
+  <path class="flow" d="M602 130 L 696 172"/>
+  <path class="flow" d="M602 350 L 696 372"/>
+
+  <!-- labels -->
+  <text class="lbl" x="270" y="102">HTTPS</text>
+  <text class="lbl" x="488" y="234">/api/* + JWT</text>
+  <text class="lbl" x="614" y="148">Mongoose queries</text>
+  <text class="lbl" x="614" y="362">generateContent()</text>
+
+  <!-- redirect flow strip -->
+  <g transform="translate(60,420)">
+    <rect width="840" height="100" rx="14" fill="#FFFFFF" stroke="#DDD3F5"/>
+    <text class="ttl" x="24" y="30">Redirect &amp; tracking flow</text>
+    <text class="sub" x="24" y="58">Visitor → GET /r/:shortCode → Express looks up the Link → logs a Visit (device, geo, referrer) → 302 to the</text>
+    <text class="sub" x="24" y="78">destination URL → Socket.io pushes live click events to the owner's dashboard in real time.</text>
+  </g>
+</svg>

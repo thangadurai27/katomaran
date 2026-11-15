@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="260" viewBox="0 0 880 260" role="img" aria-label="URL shortening workflow: paste a long URL, SnapLink AI creates a short link, visitors are redirected and every click is tracked">
+  <defs>
+    <linearGradient id="wbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8F5FE"/>
+      <stop offset="100%" stop-color="#EDE7FA"/>
+    </linearGradient>
+    <linearGradient id="waccent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+  </defs>
+  <rect width="880" height="260" rx="18" fill="url(#wbg)"/>
+
+  <!-- Step 1: long URL -->
+  <g transform="translate(40,60)">
+    <rect width="180" height="140" rx="14" fill="#FFFFFF" stroke="#DDD3F5"/>
+    <text x="20" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#7C3AED">1 · PASTE URL</text>
+    <rect x="20" y="48" width="140" height="12" rx="6" fill="#E5DEFA"/>
+    <rect x="20" y="68" width="120" height="12" rx="6" fill="#E5DEFA"/>
+    <rect x="20" y="88" width="90" height="12" rx="6" fill="#E5DEFA"/>
+    <text x="20" y="122" font-family="'Segoe UI', Arial, sans-serif" font-size="10" fill="#8A85A3">long-original-url.com/page</text>
+  </g>
+
+  <g transform="translate(240,118)"><path d="M0 12 h44 M36 4 l10 8 -10 8" stroke="#7C3AED" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+
+  <!-- Step 2: short link -->
+  <g transform="translate(300,60)">
+    <rect width="180" height="140" rx="14" fill="#FFFFFF" stroke="#DDD3F5"/>
+    <text x="20" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#7C3AED">2 · SHORT LINK</text>
+    <rect x="20" y="52" width="140" height="40" rx="10" fill="url(#waccent)"/>
+    <text x="34" y="77" font-family="Consolas, monospace" font-size="13" fill="#FFFFFF">/r/8xK2pQ</text>
+    <text x="20" y="122" font-family="'Segoe UI', Arial, sans-serif" font-size="10" fill="#8A85A3">alias · expiry · password · UTM</text>
+  </g>
+
+  <g transform="translate(500,118)"><path d="M0 12 h44 M36 4 l10 8 -10 8" stroke="#7C3AED" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+
+  <!-- Step 3: redirect -->
+  <g transform="translate(560,60)">
+    <rect width="140" height="140" rx="14" fill="#FFFFFF" stroke="#DDD3F5"/>
+    <text x="20" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#7C3AED">3 · REDIRECT</text>
+    <circle cx="70" cy="82" r="30" fill="#F3EEFC" stroke="#C4B5FD"/>
+    <path d="M58 82 h18 m-6 -7 l7 7 -7 7" stroke="#7C3AED" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="100" cy="58" r="5" fill="#8B5CF6"/>
+    <circle cx="42" cy="100" r="5" fill="#A78BFA"/>
+  </g>
+
+  <g transform="translate(712,118)"><path d="M0 12 h44 M36 4 l10 8 -10 8" stroke="#7C3AED" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+
+  <!-- Step 4: analytics -->
+  <g transform="translate(690,60)" width="150" height="140">
+  </g>
+  <g transform="translate(724,60)">
+    <rect width="120" height="140" rx="14" fill="#FFFFFF" stroke="#DDD3F5"/>
+    <text x="16" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" fill="#7C3AED">4 · TRACK</text>
+    <rect x="16" y="100" width="12" height="20" rx="3" fill="#8B5CF6"/>
+    <rect x="34" y="86" width="12" height="34" rx="3" fill="#A78BFA"/>
+    <rect x="52" y="70" width="12" height="50" rx="3" fill="#C4B5FD"/>
+    <rect x="70" y="56" width="12" height="64" rx="3" fill="#7C3AED"/>
+    <path d="M18 78 C 40 60, 60 66, 90 42" stroke="#4C1D95" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <text x="40" y="238" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#6B6485">Every visit is recorded by the backend (device, country, browser, referrer) and streamed live to the dashboard via Socket.io.</text>
+</svg>

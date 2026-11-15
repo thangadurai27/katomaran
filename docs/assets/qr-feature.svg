@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="280" viewBox="0 0 880 280" role="img" aria-label="QR code center: generate scannable QR codes for every short link, customize colors and sizes, scan to open the destination">
+  <defs>
+    <linearGradient id="qbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8F5FE"/>
+      <stop offset="100%" stop-color="#EDE7FA"/>
+    </linearGradient>
+  </defs>
+  <rect width="880" height="280" rx="18" fill="url(#qbg)"/>
+
+  <!-- Big QR illustration -->
+  <g transform="translate(70,50)">
+    <rect width="180" height="180" rx="16" fill="#FFFFFF" stroke="#DDD3F5"/>
+    <g fill="#17153A">
+      <rect x="20" y="20" width="40" height="40" rx="6"/><rect x="120" y="20" width="40" height="40" rx="6"/><rect x="20" y="120" width="40" height="40" rx="6"/>
+      <rect x="28" y="28" width="24" height="24" fill="#FFFFFF"/><rect x="128" y="28" width="24" height="24" fill="#FFFFFF"/><rect x="28" y="128" width="24" height="24" fill="#FFFFFF"/>
+      <rect x="34" y="34" width="12" height="12" fill="#7C3AED"/><rect x="134" y="34" width="12" height="12" fill="#7C3AED"/><rect x="34" y="134" width="12" height="12" fill="#7C3AED"/>
+      <rect x="76" y="24" width="10" height="10" rx="2"/><rect x="92" y="40" width="10" height="10" rx="2"/><rect x="76" y="56" width="10" height="10" rx="2"/>
+      <rect x="80" y="90" width="16" height="16" rx="3"/><rect x="104" y="104" width="12" height="12" rx="2"/><rect x="84" y="122" width="10" height="10" rx="2"/>
+      <rect x="104" y="84" width="10" height="10" rx="2"/><rect x="124" y="120" width="12" height="12" rx="2"/><rect x="140" y="140" width="10" height="10" rx="2"/>
+      <rect x="76" y="144" width="12" height="12" rx="2"/><rect x="60" y="96" width="10" height="10" rx="2"/>
+    </g>
+  </g>
+
+  <!-- scan animation -->
+  <g transform="translate(70,50)">
+    <rect x="8" y="86" width="164" height="4" rx="2" fill="#8B5CF6" opacity="0.85"/>
+  </g>
+
+  <!-- arrow -->
+  <g transform="translate(300,128)"><path d="M0 12 h56 M46 2 l12 10 -12 10" stroke="#7C3AED" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+
+  <!-- options panel -->
+  <g transform="translate(400,54)">
+    <rect width="430" height="172" rx="14" fill="#FFFFFF" stroke="#DDD3F5"/>
+    <text x="24" y="34" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#17153A">QR Center</text>
+    <rect x="24" y="52" width="150" height="20" rx="10" fill="#F3EEFC"/>
+    <text x="36" y="66" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#6B6485">PNG &amp; SVG export</text>
+    <rect x="186" y="52" width="170" height="20" rx="10" fill="#F3EEFC"/>
+    <text x="198" y="66" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#6B6485">custom colors &amp; size</text>
+    <rect x="24" y="82" width="210" height="20" rx="10" fill="#F3EEFC"/>
+    <text x="36" y="96" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#6B6485">per-link QR saved to link record</text>
+    <rect x="24" y="112" width="200" height="20" rx="10" fill="#F3EEFC"/>
+    <text x="36" y="126" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#6B6485">error-correction level control</text>
+    <rect x="24" y="142" width="180" height="20" rx="10" fill="#F3EEFC"/>
+    <text x="36" y="156" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#6B6485">tracks QR scans in analytics</text>
+  </g>
+
+  <text x="400" y="252" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#6B6485">Every generated QR points to the real short URL — scan it and the visit is counted.</text>
+</svg>

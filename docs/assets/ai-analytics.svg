@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300" viewBox="0 0 880 300" role="img" aria-label="Gemini AI insights: engagement scoring, performance prediction, URL safety checks and a conversational chat assistant">
+  <defs>
+    <linearGradient id="abg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1B1140"/>
+      <stop offset="100%" stop-color="#4C1D95"/>
+    </linearGradient>
+    <linearGradient id="acard" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.04"/>
+    </linearGradient>
+  </defs>
+  <rect width="880" height="300" rx="18" fill="url(#abg)"/>
+  <circle cx="780" cy="30" r="120" fill="#8B5CF6" opacity="0.15"/>
+
+  <!-- Gemini badge -->
+  <g transform="translate(48,44)">
+    <rect width="64" height="64" rx="16" fill="#8B5CF6"/>
+    <path d="M36 12 l-9 16 h8 l-2 16 9-16 h-8 l2-16 z" fill="#FFFFFF"/>
+    <text x="84" y="32" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">Google Gemini AI</text>
+    <text x="84" y="54" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#D8CCF5">Insights generated from your real link analytics</text>
+  </g>
+
+  <!-- insight cards -->
+  <g transform="translate(48,140)">
+    <rect width="188" height="120" rx="14" fill="url(#acard)" stroke="#A78BFA" stroke-opacity="0.35"/>
+    <text x="18" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#C4B5FD">Engagement Score</text>
+    <text x="18" y="66" font-family="'Segoe UI', Arial, sans-serif" font-size="26" font-weight="700" fill="#FFFFFF">78/100</text>
+    <rect x="18" y="86" width="150" height="8" rx="4" fill="#FFFFFF" opacity="0.15"/>
+    <rect x="18" y="86" width="117" height="8" rx="4" fill="#A78BFA"/>
+  </g>
+  <g transform="translate(252,140)">
+    <rect width="188" height="120" rx="14" fill="url(#acard)" stroke="#A78BFA" stroke-opacity="0.35"/>
+    <text x="18" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#C4B5FD">Performance Forecast</text>
+    <path d="M18 84 C 50 70, 70 78, 100 56 S 150 34, 170 30" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="170" cy="30" r="5" fill="#C4B5FD"/>
+    <text x="18" y="110" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#B9A8E8">predicted clicks for the next 7 days</text>
+  </g>
+  <g transform="translate(456,140)">
+    <rect width="188" height="120" rx="14" fill="url(#acard)" stroke="#A78BFA" stroke-opacity="0.35"/>
+    <text x="18" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#C4B5FD">URL Safety Check</text>
+    <circle cx="40" cy="62" r="16" fill="#22C55E"/>
+    <path d="M33 62 l5 5 10 -10" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="66" y="58" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#FFFFFF">Safe to share</text>
+    <text x="66" y="76" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#B9A8E8">spam &amp; phishing detection</text>
+  </g>
+  <g transform="translate(660,140)">
+    <rect width="188" height="120" rx="14" fill="url(#acard)" stroke="#A78BFA" stroke-opacity="0.35"/>
+    <text x="18" y="30" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#C4B5FD">AI Chat Assistant</text>
+    <rect x="18" y="48" width="120" height="18" rx="9" fill="#FFFFFF" opacity="0.18"/>
+    <rect x="48" y="74" width="122" height="18" rx="9" fill="#8B5CF6"/>
+    <text x="18" y="112" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#B9A8E8">"Which campaign performs best?"</text>
+  </g>
+
+  <text x="48" y="286" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#9A87CC">Powered by gemini-2.5-flash via @google/generative-ai · falls back gracefully when GEMINI_API_KEY is not configured</text>
+</svg>
