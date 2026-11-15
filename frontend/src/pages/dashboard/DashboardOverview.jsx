@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -27,7 +27,6 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    ResponsiveContainer,
 } from 'recharts';
 import { format, subDays, formatDistanceToNow } from 'date-fns';
 import toast from 'react-hot-toast';
@@ -78,6 +77,7 @@ const ChartTooltip = ({ active, payload, label }) => {
 const DashboardOverview = () => {
     const { user } = useAuthStore();
     const [range, setRange] = useState(7);
+    const [mountedAt] = useState(() => Date.now());
 
     const { data: statsData, isLoading: isLoadingStats } = useQuery({
         queryKey: ['dashboard-stats'],
@@ -476,7 +476,7 @@ const DashboardOverview = () => {
                                 <tbody>
                                     {recentLinks.slice(0, 5).map((link) => {
                                         const expired =
-                                            link.expiresAt && new Date(link.expiresAt).getTime() < Date.now();
+                                            link.expiresAt && new Date(link.expiresAt).getTime() < mountedAt;
                                         const status = expired ? 'Expired' : link.isActive ? 'Active' : 'Inactive';
 
                                         return (

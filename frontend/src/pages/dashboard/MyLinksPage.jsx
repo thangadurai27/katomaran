@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
-    Search, Filter, Grid3X3, List, Copy, Edit, Archive, Trash2, QrCode,
-    Star, Pin, ExternalLink, MoreVertical, Plus, Link2, SortAsc, SortDesc,
+    Search, Grid3X3, List, Copy, Archive, Trash2,
+    Star, Pin, ExternalLink, MoreVertical, Plus, Link2,
     CheckCircle, Clock
 } from 'lucide-react';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/useMediaQuery';
-import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
 import { format } from 'date-fns';
@@ -32,8 +28,8 @@ const LinkCard = ({ link, onAction }) => {
 
     const isExpired = link.expiresAt && new Date(link.expiresAt) < new Date();
 
-    const restoreLink = async (id) => {
-        await onAction('restore', id);
+    const restoreLink = async (link) => {
+        await onAction('restore', link);
         toast.success('Link restored!');
     };
 
@@ -68,22 +64,22 @@ const LinkCard = ({ link, onAction }) => {
                         </button>
                         {menuOpen && (
                             <div className="absolute right-0 top-8 w-48 card p-2 z-20 shadow-card-lg rounded-lg">
-                                <button onClick={() => { onAction('favorite', link._id); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs rounded-lg flex items-center gap-2 transition-colors" style={{ color: 'var(--muted)' }} onMouseEnter={e => e.currentTarget.style.background = 'var(--raised)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                                <button onClick={() => { onAction('favorite', link); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs rounded-lg flex items-center gap-2 transition-colors" style={{ color: 'var(--muted)' }} onMouseEnter={e => e.currentTarget.style.background = 'var(--raised)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                                     <Star className="w-3.5 h-3.5" /> {link.isFavorited ? 'Unfavorite' : 'Favorite'}
                                 </button>
-                                <button onClick={() => { onAction('pin', link._id); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs rounded-lg flex items-center gap-2 transition-colors" style={{ color: 'var(--muted)' }} onMouseEnter={e => e.currentTarget.style.background = 'var(--raised)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                                <button onClick={() => { onAction('pin', link); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs rounded-lg flex items-center gap-2 transition-colors" style={{ color: 'var(--muted)' }} onMouseEnter={e => e.currentTarget.style.background = 'var(--raised)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                                     <Pin className="w-3.5 h-3.5" /> {link.isPinned ? 'Unpin' : 'Pin'}
                                 </button>
-                                <button onClick={() => { onAction('archive', link._id); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs rounded-lg flex items-center gap-2 transition-colors" style={{ color: 'var(--muted)' }} onMouseEnter={e => e.currentTarget.style.background = 'var(--raised)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                                <button onClick={() => { onAction('archive', link); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs rounded-lg flex items-center gap-2 transition-colors" style={{ color: 'var(--muted)' }} onMouseEnter={e => e.currentTarget.style.background = 'var(--raised)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                                     <Archive className="w-3.5 h-3.5" /> Archive
                                 </button>
                                 <div className="border-t my-1" style={{ borderColor: 'var(--border)' }} />
                                 {isTrashed && (
-                                    <button onClick={() => { restoreLink(link._id); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs text-primary hover:bg-primary/10 rounded-lg flex items-center gap-2">
+                                    <button onClick={() => { restoreLink(link); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs text-primary hover:bg-primary/10 rounded-lg flex items-center gap-2">
                                         <CheckCircle className="w-3.5 h-3.5" /> Restore
                                     </button>
                                 )}
-                                <button onClick={() => { onAction('delete', link._id); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs text-danger hover:bg-danger/10 rounded-lg flex items-center gap-2">
+                                <button onClick={() => { onAction('delete', link); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-xs text-danger hover:bg-danger/10 rounded-lg flex items-center gap-2">
                                     <Trash2 className="w-3.5 h-3.5" /> Delete
                                 </button>
                             </div>
@@ -145,11 +141,6 @@ const MyLinksPage = () => {
     const [filter, setFilter] = useState('all');
     const [selectedIds, setSelectedIds] = useState([]);
     const queryClient = useQueryClient();
-    const location = useLocation();
-
-    useEffect(() => {
-        setPage(1);
-    }, [location.pathname]);
 
     const { data, isLoading } = useQuery({
         queryKey: ['links', { search, sortBy, sortOrder, page, filter }],
@@ -166,7 +157,8 @@ const MyLinksPage = () => {
     });
 
     const actionMutation = useMutation({
-        mutationFn: async ({ action, id }) => {
+        mutationFn: async ({ action, link }) => {
+            const id = link._id;
             if (action === 'delete') return api.delete(`/links/${id}`);
             if (action === 'archive') return api.patch(`/links/${id}/archive`);
             if (action === 'favorite') return api.put(`/links/${id}`, { isFavorited: !link.isFavorited });
@@ -349,7 +341,7 @@ const MyLinksPage = () => {
                         <LinkCard
                             key={link._id}
                             link={link}
-                            onAction={(action, id) => actionMutation.mutate({ action, id })}
+                            onAction={(action, link) => actionMutation.mutate({ action, link })}
                         />
                     ))}
                 </div>
