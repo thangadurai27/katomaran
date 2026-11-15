@@ -104,8 +104,9 @@ app.get('/health', (req, res) => {
         status: 'UP',
         service: 'SnapLink AI API',
         mongo: mongoReady ? 'connected' : 'disconnected',
+        demoSeed: 'enabled',
         timestamp: new Date().toISOString(),
-        version: '1.0.0'
+        version: '1.1.0'
     });
 });
 
