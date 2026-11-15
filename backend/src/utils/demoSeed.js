@@ -147,6 +147,8 @@ const pickIpHash = () => {
     return out;
 };
 
+let lastSeedStatus = 'pending';
+
 const ensureDemoUser = async () => {
     let user = await User.findOne({ email: DEMO_EMAIL }).select('+password');
 
@@ -166,23 +168,33 @@ const ensureDemoUser = async () => {
         // skip validation but keep the pre-save hook so it is bcrypt-hashed.
         await user.save({ validateBeforeSave: false });
         logger.info('Demo account created (demo@gmail.com).');
-    } else if (!(await user.comparePassword(DEMO_PASSWORD))) {
-        // demo@gmail.com is reserved for the shared demo account. If an
-        // earlier signup or a changed password made the credentials drift,
-        // reclaim it so "Try Demo Account" always works.
-        user.password = DEMO_PASSWORD;
-        user.isDemo = true;
-        user.isActive = true;
-        user.isBanned = false;
-        await user.save({ validateBeforeSave: false });
-        logger.info('Demo account credentials were reclaimed for demo@gmail.com.');
-    }
+    } else {
+        // Always force demo flags and clear any lockout FIRST — even if the
+        // credential check below fails, the demo must stay reachable.
+        await User.updateOne(
+            { _id: user._id },
+            { $set: { isDemo: true, isActive: true, isBanned: false, loginAttempts: 0 }, $unset: { lockUntil: 1 } }
+        );
 
-    // Never let a lockout (from brute-force attempts on a public account) persist.
-    await User.updateOne(
-        { _id: user._id },
-        { $set: { isDemo: true, isActive: true, isBanned: false, loginAttempts: 0 }, $unset: { lockUntil: 1 } }
-    );
+        let passwordOk = false;
+        try {
+            passwordOk = !!(user.password && (await user.comparePassword(DEMO_PASSWORD)));
+        } catch {
+            passwordOk = false;
+        }
+
+        if (!passwordOk) {
+            // demo@gmail.com is reserved for the shared demo account. If an
+            // earlier signup or a changed password made the credentials drift,
+            // reclaim it so "Try Demo Account" always works.
+            user.password = DEMO_PASSWORD;
+            user.isDemo = true;
+            user.isActive = true;
+            user.isBanned = false;
+            await user.save({ validateBeforeSave: false });
+            logger.info('Demo account credentials were reclaimed for demo@gmail.com.');
+        }
+    }
 
     return User.findOne({ email: DEMO_EMAIL });
 };
@@ -379,10 +391,12 @@ const ensureDemoAccount = async () => {
     try {
         const demoUser = await ensureDemoUser();
         await ensureDemoData(demoUser);
+        lastSeedStatus = 'ok';
         logger.info('Demo account ready (demo@gmail.com).');
     } catch (err) {
+        lastSeedStatus = `error: ${err.message}`;
         logger.error(`Demo account seeding failed: ${err.message}`);
     }
 };
 
-module.exports = { ensureDemoAccount, DEMO_EMAIL, DEMO_PASSWORD };
+module.exports = { ensureDemoAccount, DEMO_EMAIL, DEMO_PASSWORD, getSeedStatus: () => lastSeedStatus };

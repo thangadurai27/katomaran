@@ -17,7 +17,7 @@ const { getCorsOrigins, isAllowedOrigin } = require('./utils/corsOrigins');
 const { generalLimiter } = require('./middlewares/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
 const requireDb = require('./middlewares/requireDb');
-const { ensureDemoAccount } = require('./utils/demoSeed');
+const { ensureDemoAccount, getSeedStatus } = require('./utils/demoSeed');
 
 // Import Routes
 const authRoutes = require('./routes/auth.routes');
@@ -105,6 +105,7 @@ app.get('/health', (req, res) => {
         service: 'SnapLink AI API',
         mongo: mongoReady ? 'connected' : 'disconnected',
         demoSeed: 'enabled',
+        demoSeedStatus: getSeedStatus(),
         timestamp: new Date().toISOString(),
         version: '1.1.0'
     });
