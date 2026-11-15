@@ -5,6 +5,7 @@ const Link = require('../models/Link.model');
 const Visit = require('../models/Visit.model');
 const Campaign = require('../models/Campaign.model');
 const ActivityLog = require('../models/ActivityLog.model');
+const Notification = require('../models/Notification.model');
 const logger = require('./logger');
 const { createNotification } = require('./notification.helper');
 
