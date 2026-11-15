@@ -412,7 +412,7 @@ Released under the **MIT License**. See the [package.json license field](backend
 
 <div align="center">
 
-**[Live App](https://katomaran-eight.vercel.app)** · **[API Health](https://katomaran-y789.onrender.com/health)** · **[API Docs](docs/API.md)** · **[Deploy Guide](DEPLOY.md)** · **[Testing Report](TESTING_REPORT.md)**
+**[Live App](https://katomaran-eight.vercel.app)** · **[API Health](https://katomaran-y789.onrender.com/health)** · **[API Docs](docs/API.md)** · **[Deploy Guide](DEPLOY.md)** · **[Testing Report](TESTING_REPORT.md)** · **[Interview Prep](docs/interview-preparation/README.md)**
 
 Built with React · Node.js · MongoDB · Gemini AI
 
