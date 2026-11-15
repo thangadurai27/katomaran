@@ -6,7 +6,9 @@ import { Globe, Monitor, TrendingUp, Users, Compass, BarChart2, Download, Eye } 
 import api from '@/lib/api';
 import { format } from 'date-fns';
 import PageHeader from '@/components/ui/PageHeader';
+import ResponsiveChart from '@/components/ui/ResponsiveChart';
 import { StatCard } from '@/components/ui';
+import { API_URL } from '@/config/env';
 
 
 const AXIS_TICK = { fill: 'var(--muted)', fontSize: 11 };
@@ -67,6 +69,7 @@ const AnalyticsPage = () => {
     const topReferers = analytics.referrerStats?.slice(0, 10) || [];
 
     const hasDailyData = dailyData.some((d) => d.clicks > 0 || d.unique > 0);
+    const loadingSkeleton = <div className="skeleton h-[250px] w-full rounded-xl" />;
 
     return (
         <div className="space-y-6 bg-background">
@@ -87,7 +90,7 @@ const AnalyticsPage = () => {
                         ))}
                         <button
                             type="button"
-                            onClick={() => window.open(`${process.env.VITE_API_URL}/export/analytics?days=${days}`, '_blank')}
+                            onClick={() => window.open(`${API_URL}/export/analytics?days=${days}`, '_blank')}
                             className="btn-secondary flex items-center gap-2"
                         >
                             <Download className="w-4 h-4" /> Export CSV
@@ -102,8 +105,8 @@ const AnalyticsPage = () => {
                     label="Total Clicks"
                     value={analytics.totalClicks}
                     icon={TrendingUp}
-                    iconBg="bg-primary/10"
-                    iconColor="text-primary"
+                    tint="purple"
+                    hint={`Last ${days} days`}
                     delay={0}
                     isLoading={isLoading}
                 />
@@ -111,27 +114,27 @@ const AnalyticsPage = () => {
                     label="Unique Visitors"
                     value={analytics.uniqueClicks}
                     icon={Users}
-                    iconBg="bg-secondary/10"
-                    iconColor="text-secondary"
-                    delay={0.08}
+                    tint="blue"
+                    hint={`Last ${days} days`}
+                    delay={0.06}
                     isLoading={isLoading}
                 />
                 <StatCard
                     label="Human Traffic"
                     value={analytics.humanClicks}
                     icon={Globe}
-                    iconBg="bg-emerald/10"
-                    iconColor="text-emerald"
-                    delay={0.16}
+                    tint="green"
+                    hint={`Last ${days} days`}
+                    delay={0.12}
                     isLoading={isLoading}
                 />
                 <StatCard
                     label="Bot Traffic"
                     value={analytics.botClicks}
                     icon={Monitor}
-                    iconBg="bg-warning/10"
-                    iconColor="text-warning"
-                    delay={0.24}
+                    tint="amber"
+                    hint={`Last ${days} days`}
+                    delay={0.18}
                     isLoading={isLoading}
                 />
             </div>

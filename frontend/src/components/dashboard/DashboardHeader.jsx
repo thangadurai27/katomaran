@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, Search, Menu, Plus, LogOut, User, Settings, ChevronDown } from 'lucide-react';
+import { Bell, Search, Menu, LogOut, User, Settings, ChevronDown, Zap } from 'lucide-react';
 import useAuthStore from '@/stores/authStore';
 import useUIStore from '@/stores/uiStore';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import { useIsMobile } from '@/hooks/useMediaQuery';
 import toast from 'react-hot-toast';
 
 const DashboardHeader = () => {
     const { user, logout } = useAuthStore();
     const { setSidebarOpen } = useUIStore();
-    const isMobile = useIsMobile();
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
     const navigate = useNavigate();
@@ -28,6 +26,9 @@ const DashboardHeader = () => {
         .slice(0, 2)
         .join('')
         .toUpperCase() || 'U';
+
+    const firstName = user?.name?.split(' ')[0] || 'there';
+    const planLabel = user?.plan ? `${String(user.plan).charAt(0).toUpperCase()}${String(user.plan).slice(1)} Plan` : 'Free Plan';
 
     useEffect(() => {
         const onKey = (e) => {
@@ -46,117 +47,132 @@ const DashboardHeader = () => {
     }, [menuOpen]);
 
     return (
-        <header className="sticky top-0 z-20 flex items-center justify-between h-14 sm:h-16 px-3 sm:px-6 bg-[var(--bg-surface)]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800 shadow-[0_1px_0_rgba(15,23,42,0.04)] safe-top">
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+        <header className="safe-top sticky top-0 z-20 h-[76px] border-b border-[var(--border)] bg-[var(--bg-surface)]/90 backdrop-blur-xl">
+            <div className="mx-auto flex h-full w-full items-center gap-3 px-4 sm:px-6 lg:px-8">
                 <button
                     type="button"
                     onClick={() => setSidebarOpen(true)}
-                    className="touch-target btn-ghost p-2 lg:hidden shrink-0"
+                    className="touch-target -ml-1 shrink-0 rounded-xl p-2 text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-raised)] hover:text-[var(--text-primary)] lg:hidden"
                     aria-label="Open menu"
                 >
-                    <Menu className="w-5 h-5" />
+                    <Menu className="h-5 w-5" />
                 </button>
 
-                <div className="relative hidden md:flex items-center flex-1 max-w-md">
-                    <Search className="absolute left-3.5 w-4 h-4 pointer-events-none" style={{ color: 'var(--text-muted)' }} />
+                {/* Compact brand on mobile */}
+                <Link to="/dashboard/overview" className="flex min-w-0 items-center gap-2 lg:hidden">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[10px] bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] shadow-[0_4px_12px_rgba(124,58,237,0.28)]">
+                        <Zap className="h-4 w-4 fill-white text-white" />
+                    </span>
+                    <span className="truncate font-display text-[17px] font-extrabold tracking-tight text-[var(--text-primary)]">
+                        SnapLink <span className="gradient-text-brand">AI</span>
+                    </span>
+                </Link>
+
+                <div className="relative hidden w-full max-w-[490px] items-center md:flex">
+                    <Search className="pointer-events-none absolute left-4 h-[17px] w-[17px] text-[var(--text-muted)]" />
                     <input
                         type="search"
-                        placeholder="Search links, campaigns…"
-                        className="input-field w-72 pl-10 pr-14 py-2 bg-raised"
+                        placeholder="Search links, campaigns, or insights..."
+                        className="h-11 w-full rounded-xl border border-[#ECEBF4] bg-[#F8F7FC] pl-11 pr-16 text-[14px] text-[var(--text-primary)] outline-none transition-all placeholder:text-[var(--text-muted)] focus:border-[#C9B4FF] focus:bg-white focus:ring-4 focus:ring-[#7C3AED]/[0.08]"
                         aria-label="Search"
                     />
-                    <kbd className="absolute right-3 hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded-md border border-slate-200 bg-white text-slate-400">
+                    <kbd className="pointer-events-none absolute right-3 hidden items-center rounded-md border border-[#E4E1EE] bg-white px-1.5 py-0.5 text-[10px] font-medium text-[var(--text-muted)] lg:inline-flex">
                         ⌘K
                     </kbd>
                 </div>
-            </div>
 
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                <ThemeToggle className="hidden sm:flex" />
-                <Link to="/dashboard/create-link" className="btn-primary hidden lg:inline-flex py-2 px-4 text-sm">
-                    <Plus className="w-4 h-4" />
-                    <span className="hidden xl:inline">New Link</span>
-                    <span className="xl:hidden">New</span>
-                </Link>
+                <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2.5">
+                    <ThemeToggle className="touch-target rounded-xl border border-[var(--border)] bg-[var(--bg-surface)] p-2.5 text-[var(--text-secondary)] hover:bg-[var(--bg-raised)]" />
 
-                <Link
-                    to="/dashboard/notifications"
-                    className="relative p-2.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
-                    aria-label="Notifications"
-                >
-                    <Bell className="w-5 h-5" />
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-brand-500 rounded-full ring-2 ring-white" />
-                </Link>
-
-                <div className="relative" ref={menuRef}>
-                    <button
-                        type="button"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        className="flex items-center gap-2 pl-1.5 pr-2 py-1.5 rounded-xl hover:bg-slate-100 transition-colors"
-                        aria-expanded={menuOpen}
-                        aria-haspopup="menu"
+                    <Link
+                        to="/dashboard/notifications"
+                        className="relative grid h-10 w-10 place-items-center rounded-xl text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-raised)] hover:text-[var(--text-primary)]"
+                        aria-label="Notifications"
                     >
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-brand">
-                            {initials}
-                        </div>
-                        <div className="hidden md:block text-left">
-                            <p className="text-sm font-semibold leading-none text-slate-800">{user?.name?.split(' ')[0]}</p>
-                            <p className="text-xs capitalize mt-0.5 text-slate-500">{user?.plan || 'free'} plan</p>
-                        </div>
-                        <ChevronDown className={`w-4 h-4 text-slate-400 hidden md:block transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
-                    </button>
+                        <Bell className="h-[19px] w-[19px]" />
+                        <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-[#8B5CF6] ring-2 ring-[var(--bg-surface)]" />
+                    </Link>
 
-                    <AnimatePresence>
-                        {menuOpen && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -6, scale: 0.98 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: -6, scale: 0.98 }}
-                                transition={{ duration: 0.15 }}
-                                className="absolute right-0 mt-2 w-60 card-elevated rounded-2xl overflow-hidden z-50"
-                                role="menu"
-                            >
-                                <div className="px-4 py-3 border-b border-slate-100 bg-slate-50/80">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white shrink-0">
-                                            {initials}
-                                        </div>
-                                        <div className="min-w-0">
-                                            <p className="text-sm font-semibold truncate text-slate-800">{user?.name}</p>
-                                            <p className="text-xs truncate text-slate-500">{user?.email}</p>
+                    <div className="relative" ref={menuRef}>
+                        <button
+                            type="button"
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className="flex items-center gap-2.5 rounded-xl p-1 transition-colors hover:bg-[var(--bg-raised)] sm:pr-2"
+                            aria-expanded={menuOpen}
+                            aria-haspopup="menu"
+                        >
+                            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] text-[12px] font-bold text-white shadow-[0_4px_12px_rgba(124,58,237,0.25)]">
+                                {initials}
+                            </span>
+                            <span className="hidden text-left md:block">
+                                <span className="block text-[13px] font-semibold leading-none text-[var(--text-primary)]">
+                                    {firstName}
+                                </span>
+                                <span className="mt-1 block text-[11px] leading-none text-[var(--text-muted)]">
+                                    {planLabel}
+                                </span>
+                            </span>
+                            <ChevronDown
+                                className={`hidden h-4 w-4 text-[var(--text-muted)] transition-transform md:block ${
+                                    menuOpen ? 'rotate-180' : ''
+                                }`}
+                            />
+                        </button>
+
+                        <AnimatePresence>
+                            {menuOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="card-elevated absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl"
+                                    role="menu"
+                                >
+                                    <div className="border-b border-[var(--border)] bg-[var(--bg-raised)] px-4 py-3.5">
+                                        <div className="flex items-center gap-3">
+                                            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] text-sm font-bold text-white">
+                                                {initials}
+                                            </span>
+                                            <div className="min-w-0">
+                                                <p className="truncate text-sm font-semibold text-[var(--text-primary)]">
+                                                    {user?.name}
+                                                </p>
+                                                <p className="truncate text-xs text-[var(--text-muted)]">{user?.email}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="p-1.5">
-                                    {[
-                                        { to: '/dashboard/profile', icon: User, label: 'Profile' },
-                                        { to: '/dashboard/settings', icon: Settings, label: 'Settings' },
-                                    ].map(({ to, icon: Icon, label }) => (
-                                        <Link
-                                            key={to}
-                                            to={to}
-                                            onClick={() => setMenuOpen(false)}
-                                            role="menuitem"
-                                            className="flex items-center gap-2.5 px-3 py-2.5 text-sm rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
-                                        >
-                                            <Icon className="w-4 h-4" /> {label}
-                                        </Link>
-                                    ))}
-                                    <div className="border-t border-slate-100 mt-1 pt-1">
-                                        <button
-                                            type="button"
-                                            onClick={handleLogout}
-                                            role="menuitem"
-                                            className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm rounded-xl text-red-600 hover:bg-red-50 transition-colors"
-                                        >
-                                            <LogOut className="w-4 h-4" /> Logout
-                                        </button>
+                                    <div className="p-1.5">
+                                        {[
+                                            { to: '/dashboard/profile', icon: User, label: 'Profile' },
+                                            { to: '/dashboard/settings', icon: Settings, label: 'Settings' },
+                                        ].map(({ to, icon: Icon, label }) => (
+                                            <Link
+                                                key={to}
+                                                to={to}
+                                                onClick={() => setMenuOpen(false)}
+                                                role="menuitem"
+                                                className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-raised)] hover:text-[var(--text-primary)]"
+                                            >
+                                                <Icon className="h-4 w-4" /> {label}
+                                            </Link>
+                                        ))}
+                                        <div className="mt-1 border-t border-[var(--border)] pt-1">
+                                            <button
+                                                type="button"
+                                                onClick={handleLogout}
+                                                role="menuitem"
+                                                className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30"
+                                            >
+                                                <LogOut className="h-4 w-4" /> Logout
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 </div>
             </div>
         </header>

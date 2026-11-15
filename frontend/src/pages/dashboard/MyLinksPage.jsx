@@ -220,33 +220,33 @@ const MyLinksPage = () => {
                     label="Total Links"
                     value={pagination.total || 0}
                     icon={Link2}
-                    iconBg="bg-primary/10"
-                    iconColor="text-primary"
+                    tint="purple"
+                    hint="All links"
                     delay={0}
                 />
                 <StatCard
                     label="Active"
                     value={pagination.active || 0}
                     icon={CheckCircle}
-                    iconBg="bg-success/10"
-                    iconColor="text-success"
-                    delay={0.1}
+                    tint="green"
+                    hint="Live right now"
+                    delay={0.06}
                 />
                 <StatCard
                     label="Expired"
                     value={pagination.expired || 0}
                     icon={Clock}
-                    iconBg="bg-warning/10"
-                    iconColor="text-warning"
-                    delay={0.2}
+                    tint="amber"
+                    hint="Needs attention"
+                    delay={0.12}
                 />
                 <StatCard
                     label="Favorites"
                     value={pagination.favorites || 0}
                     icon={Star}
-                    iconBg="bg-amber/10"
-                    iconColor="text-amber"
-                    delay={0.3}
+                    tint="blue"
+                    hint="Saved links"
+                    delay={0.18}
                 />
             </div>
 
