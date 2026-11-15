@@ -148,7 +148,7 @@ const pickIpHash = () => {
 };
 
 const ensureDemoUser = async () => {
-    let user = await User.findOne({ email: DEMO_EMAIL });
+    let user = await User.findOne({ email: DEMO_EMAIL }).select('+password');
 
     if (!user) {
         user = new User({
@@ -166,6 +166,16 @@ const ensureDemoUser = async () => {
         // skip validation but keep the pre-save hook so it is bcrypt-hashed.
         await user.save({ validateBeforeSave: false });
         logger.info('Demo account created (demo@gmail.com).');
+    } else if (!(await user.comparePassword(DEMO_PASSWORD))) {
+        // demo@gmail.com is reserved for the shared demo account. If an
+        // earlier signup or a changed password made the credentials drift,
+        // reclaim it so "Try Demo Account" always works.
+        user.password = DEMO_PASSWORD;
+        user.isDemo = true;
+        user.isActive = true;
+        user.isBanned = false;
+        await user.save({ validateBeforeSave: false });
+        logger.info('Demo account credentials were reclaimed for demo@gmail.com.');
     }
 
     // Never let a lockout (from brute-force attempts on a public account) persist.
