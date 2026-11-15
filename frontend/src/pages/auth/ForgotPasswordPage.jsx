@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Zap, Mail, ArrowRight, Loader2, CheckCircle } from 'lucide-react';
 import api from '@/lib/api';
@@ -7,8 +7,7 @@ import toast from 'react-hot-toast';
 
 const ForgotPasswordPage = () => {
     const [email, setEmail] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [sent, setSent] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);    const [sent, setSent] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

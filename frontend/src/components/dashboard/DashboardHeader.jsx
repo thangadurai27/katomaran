@@ -17,7 +17,7 @@ const DashboardHeader = () => {
     const handleLogout = async () => {
         await logout();
         toast.success('Logged out successfully');
-        navigate('/');
+        navigate('/login', { replace: true });
     };
 
     const initials = user?.name

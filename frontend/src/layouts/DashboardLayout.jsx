@@ -5,8 +5,10 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import FloatingActionButton from '@/components/ui/FloatingActionButton';
 import PageTransition from '@/components/ui/PageTransition';
+import ErrorBoundary from '@/components/system/ErrorBoundary';
 import useUIStore from '@/stores/uiStore';
 import useAuthStore from '@/stores/authStore';
+import { getAccessToken } from '@/lib/authTokens';
 import { useIsMobile } from '@/hooks/useMediaQuery';
 import { io } from 'socket.io-client';
 import { BASE_URL } from '@/config/env';
@@ -21,17 +23,17 @@ const DashboardLayout = () => {
 
     useEffect(() => {
         if (!accessToken) return;
-        const timer = setTimeout(() => {
-            const socket = io(BASE_URL, {
-                auth: { token: accessToken },
-                transports: ['websocket', 'polling'],
-                reconnectionDelayMax: 5000,
-            });
-            window.__socket = socket;
-        }, 0);
+        const socket = io(BASE_URL, {
+            // Read the token at (re)connect time so a refreshed access token
+            // is used instead of the stale value captured on mount.
+            auth: (cb) => cb({ token: getAccessToken() }),
+            transports: ['websocket', 'polling'],
+            reconnectionDelayMax: 5000,
+        });
+        window.__socket = socket;
         return () => {
-            clearTimeout(timer);
-            window.__socket?.disconnect();
+            socket.disconnect();
+            if (window.__socket === socket) window.__socket = null;
         };
     }, [accessToken]);
 
@@ -73,7 +75,9 @@ const DashboardLayout = () => {
                 <main className="dashboard-main dashboard-surface dashboard-canvas px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
                     <div className="mx-auto w-full min-w-0 max-w-[1600px]">
                         <PageTransition key={location.pathname}>
-                            <Outlet />
+                            <ErrorBoundary resetKey={location.pathname}>
+                                <Outlet />
+                            </ErrorBoundary>
                         </PageTransition>
                     </div>
                 </main>

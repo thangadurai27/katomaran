@@ -79,7 +79,12 @@ const DashboardOverview = () => {
     const [range, setRange] = useState(7);
     const [mountedAt] = useState(() => Date.now());
 
-    const { data: statsData, isLoading: isLoadingStats } = useQuery({
+    const {
+        data: statsData,
+        isLoading: isLoadingStats,
+        isError: isStatsError,
+        refetch: refetchStats,
+    } = useQuery({
         queryKey: ['dashboard-stats'],
         queryFn: async () => {
             const { data } = await api.get('/links/stats/overview');
@@ -87,7 +92,12 @@ const DashboardOverview = () => {
         },
     });
 
-    const { data: analyticsData, isLoading: isLoadingAnalytics } = useQuery({
+    const {
+        data: analyticsData,
+        isLoading: isLoadingAnalytics,
+        isError: isAnalyticsError,
+        refetch: refetchAnalytics,
+    } = useQuery({
         queryKey: ['analytics-overview', range],
         queryFn: async () => {
             const { data } = await api.get(`/analytics/overview?days=${range}`);
@@ -213,6 +223,28 @@ const DashboardOverview = () => {
                 </Link>
             </div>
 
+            {/* Data error banner */}
+            {(isStatsError || isAnalyticsError) && (
+                <div
+                    role="alert"
+                    className="flex flex-col gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-200"
+                >
+                    <span>
+                        Some dashboard data couldn&rsquo;t be loaded. Showing the data we have.
+                    </span>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (isStatsError) refetchStats();
+                            if (isAnalyticsError) refetchAnalytics();
+                        }}
+                        className="shrink-0 self-start rounded-lg border border-amber-300 bg-white px-3 py-1.5 text-xs font-semibold text-amber-800 transition-colors hover:bg-amber-100 sm:self-auto dark:border-amber-800 dark:bg-amber-900/40 dark:text-amber-100 dark:hover:bg-amber-900/70"
+                    >
+                        Retry
+                    </button>
+                </div>
+            )}
+
             {/* Stats */}
             <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
                 <StatCard
@@ -331,6 +363,25 @@ const DashboardOverview = () => {
                                     />
                                 </AreaChart>
                             </ResponsiveChart>
+                        ) : isAnalyticsError ? (
+                            <div className="mx-3 mt-3 flex h-[250px] flex-col items-center justify-center rounded-xl border border-dashed border-amber-200 bg-amber-50/60 px-6 text-center dark:border-amber-900/50 dark:bg-amber-950/20">
+                                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-300">
+                                    <BarChart3 className="h-6 w-6" />
+                                </span>
+                                <p className="mt-3 text-sm font-semibold text-[var(--text-primary)]">
+                                    Analytics temporarily unavailable
+                                </p>
+                                <p className="mt-1 max-w-[260px] text-xs text-[var(--text-muted)]">
+                                    We couldn&rsquo;t reach the analytics service. Try again in a moment.
+                                </p>
+                                <button
+                                    type="button"
+                                    onClick={() => refetchAnalytics()}
+                                    className="btn-secondary mt-4 px-3 py-2 text-xs"
+                                >
+                                    Retry
+                                </button>
+                            </div>
                         ) : (
                             <div className="mx-3 mt-3 flex h-[250px] flex-col items-center justify-center rounded-xl border border-dashed border-[#EBE6F6] bg-[#FBFAFE] dark:border-[#332a4d] dark:bg-[#1a1628]">
                                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#F2EAFF] text-[#7C3AED]">
@@ -438,7 +489,7 @@ const DashboardOverview = () => {
                         </div>
 
                         <Link
-                            to="/dashboard/my-links"
+                            to="/dashboard/links"
                             className="inline-flex shrink-0 items-center gap-1.5 text-[12px] font-semibold text-[var(--brand-primary)] transition-colors hover:text-[var(--brand-hover)]"
                         >
                             View All <ArrowRight className="h-3.5 w-3.5" />

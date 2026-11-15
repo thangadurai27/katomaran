@@ -1,6 +1,5 @@
-import React from 'react';
 
-const Button = ({ type, children, onClick, className: buttonClassName, ...props }) => {
+const Button = ({ type, children, onClick, className: buttonClassName }) => {
     const defaultClassName = 'btn-primary py-2 rounded-lg';
     const fullClassName = [defaultClassName, buttonClassName].filter(Boolean).join(' ').trim();
     

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Zap, Lock, Eye, EyeOff, Loader2, CheckCircle } from 'lucide-react';

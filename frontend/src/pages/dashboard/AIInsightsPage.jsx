@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Wand2, ShieldCheck, TrendingUp, MessageCircle, BookOpen, Megaphone, Loader2, Send, Sparkles } from 'lucide-react';

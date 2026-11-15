@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { QrCode, Loader2, Download, Eye, Copy, UserMinus } from 'lucide-react';
+import { QrCode, Loader2, Download, Copy } from 'lucide-react';
 import api from '@/lib/api';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const QRCenterPage = () => {
     const [url, setUrl] = useState('');
     const [qrResult, setQrResult] = useState(null);
     const [myQRs, setMyQRs] = useState([]);
-    const [qrLoading, setQrLoading] = useState(false);
     const [qrLoadingState, setQrLoadingState] = useState(false);
-    const navigate = useNavigate();
 
     const generateMutation = useMutation({
         mutationFn: () => api.post('/qr/generate', { url }),
@@ -38,8 +35,8 @@ const QRCenterPage = () => {
 
     const deleteMutation = useMutation({
         mutationFn: (id) => api.delete(`/qr/${id}`),
-        onSuccess: () => {
-            setMyQRs(prev => prev.filter(qr => qr._id !== id));
+        onSuccess: (_res, variables) => {
+            setMyQRs(prev => prev.filter(qr => qr._id !== variables));
             toast.success('QR code deleted!');
         },
         onError: () => toast.error('Failed to delete QR code'),
@@ -60,7 +57,7 @@ const QRCenterPage = () => {
                     />
                     <button
                         onClick={() => generateMutation.mutate()}
-                        disabled={!url || qrLoading || qrLoadingState}
+                        disabled={!url || qrLoadingState}
                         className="btn-primary"
                     >
                         {generateMutation.isPending ? (

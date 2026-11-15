@@ -1,4 +1,3 @@
-import React from 'react';
 
 const PageHeader = ({ title, subtitle, action, badge }) => (
     <div className="page-header flex-col xs:flex-row xs:items-end gap-3 sm:gap-4">

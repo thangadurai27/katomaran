@@ -1,4 +1,3 @@
-import React from 'react';
 import { ResponsiveContainer } from 'recharts';
 import { useIsMobile } from '@/hooks/useMediaQuery';
 

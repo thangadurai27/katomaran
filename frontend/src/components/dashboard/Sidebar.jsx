@@ -30,12 +30,12 @@ import {
 
 const primaryNav = [
     { label: 'Dashboard', icon: Home, path: '/dashboard/overview' },
-    { label: 'Links', icon: Link2, path: '/dashboard/my-links' },
+    { label: 'Links', icon: Link2, path: '/dashboard/links' },
     { label: 'Analytics', icon: BarChart3, path: '/dashboard/analytics' },
     { label: 'AI Insights', icon: Sparkles, path: '/dashboard/ai-insights', badge: 'New' },
     { label: 'Campaigns', icon: Megaphone, path: '/dashboard/campaigns' },
     { label: 'QR Center', icon: QrCode, path: '/dashboard/qr-center' },
-    { label: 'Team', icon: Users, path: '/dashboard/team-collaboration' },
+    { label: 'Team', icon: Users, path: '/dashboard/team' },
 ];
 
 const accountNav = [

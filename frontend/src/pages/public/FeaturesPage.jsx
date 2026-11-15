@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Brain, Shield, BarChart3, QrCode, Zap, Layers, Users, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';

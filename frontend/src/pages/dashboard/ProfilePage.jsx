@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { User, Mail, Settings, Shield, Image, LogOut } from 'lucide-react';
@@ -59,7 +59,7 @@ const ProfilePage = () => {
                     <div>
                         <p className="font-medium text-slate-900">{user?.name || 'User'}</p>
                         <p className="text-sm text-slate-500">{user?.email || ''}</p>
-                        <p className="text-xs text-slate-400">Member since {new Date(user?.createdAt || Date.now()).toLocaleDateString()}</p>
+                        <p className="text-xs text-slate-400">Member since {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—'}</p>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,4 @@
 // Simple placeholder pages for remaining routes
-import React from 'react';
 import { Globe, Layers, Download, Activity, Trash2, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';

@@ -20,7 +20,6 @@ export default {
         secondary: '#8B5CF6',
         accent: '#A78BFA',
         background: '#F7F7FD',
-        surface: '#FFFFFF',
         'primary-text': '#1D1B33',
         'secondary-text': '#6B6880',
         border: '#ECEBF4',
