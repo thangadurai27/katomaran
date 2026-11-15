@@ -30,13 +30,13 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // Do NOT precache HTML — stale index.html references deleted hashed assets
+        // Do not precache index.html: Vercel serves the SPA shell and hashed
+       // assets directly. Avoids Workbox "non-precached-url" errors.
         globPatterns: ['**/*.{js,css,ico,svg,png,woff2,webmanifest}'],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
-        navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/assets\//, /^\/sw\.js/, /^\/registerSW\.js/, /^\/manifest\.webmanifest/],
+        navigateFallback: null,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -48,15 +48,7 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: { cacheName: 'google-fonts-static-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 } },
           },
-          {
-            urlPattern: /^https:\/\/katomaran-y789\.onrender\.com\/api\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 5 },
-              networkTimeoutSeconds: 8,
-            },
-          },
+          // API responses (including authenticated user data) are never cached.
         ],
       },
     }),

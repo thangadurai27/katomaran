@@ -13,7 +13,7 @@ const path = require('path');
 const connectDB = require('./configs/db');
 const { initializeSocket } = require('./sockets/socketManager');
 const logger = require('./utils/logger');
-const { getCorsOrigins } = require('./utils/corsOrigins');
+const { getCorsOrigins, isAllowedOrigin } = require('./utils/corsOrigins');
 const { generalLimiter } = require('./middlewares/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
 const requireDb = require('./middlewares/requireDb');
@@ -67,10 +67,17 @@ app.use(helmet({
 }));
 
 app.use(cors({
-    origin: getCorsOrigins(),
+    origin: (origin, callback) => {
+        if (isAllowedOrigin(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    optionsSuccessStatus: 204,
 }));
 
 app.use(express.json({ limit: '10mb' }));
