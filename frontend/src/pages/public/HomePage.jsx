@@ -679,6 +679,49 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="py-24 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+            <p className="text-lg text-secondary-text">Everything you need to know about SnapLink AI.</p>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: 'Is SnapLink AI really free?',
+                a: 'Yes. The Free plan is free forever and includes up to 100 links, basic analytics, QR code generation, and custom aliases. No credit card is required to start.',
+              },
+              {
+                q: 'How does AI-powered analytics work?',
+                a: 'SnapLink AI uses Google Gemini to analyze your click patterns, identify top-performing links, and recommend the best times and channels to share your links for maximum engagement.',
+              },
+              {
+                q: 'Can I use custom domains with my short links?',
+                a: 'Custom domains are available on the Pro and Business plans. You can connect your own domain and brand every short link with your company name.',
+              },
+              {
+                q: 'Is my data secure?',
+                a: 'Absolutely. We use industry-standard encryption, secure JWT authentication with refresh token rotation, and bcrypt password hashing. Your data is stored securely in MongoDB Atlas.',
+              },
+              {
+                q: 'Can I invite my team?',
+                a: 'Yes. Pro and Business plans include team collaboration features. You can invite members, assign roles (owner, admin, member, viewer), and manage links together in shared workspaces.',
+              },
+            ].map((faq, i) => (
+              <details key={i} className="group card px-6 py-5">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <span className="font-semibold text-primary-text pr-4">{faq.q}</span>
+                  <span className="text-primary text-xl font-light shrink-0 transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 text-sm text-secondary-text leading-relaxed">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
