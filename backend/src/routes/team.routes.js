@@ -9,6 +9,21 @@ const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, ne
 
 router.use(protect);
 
+// Team stats for the dashboard
+router.get('/stats', asyncHandler(async (req, res) => {
+    const teams = await Team.find({ 'members.user': req.user._id }).lean();
+    const totalMembers = teams.reduce((sum, t) => sum + (t.members?.length || 0), 0);
+    const activeMembers = totalMembers;
+    const pendingMembers = teams.reduce((sum, t) => sum + (t.invitations?.length || 0), 0);
+    const totalInvitations = pendingMembers;
+    return success(res, 'Team stats fetched.', {
+        totalMembers,
+        activeMembers,
+        pendingMembers,
+        totalInvitations,
+    });
+}));
+
 // Get user's teams
 router.get('/', asyncHandler(async (req, res) => {
     const teams = await Team.find({ 'members.user': req.user._id }).populate('owner', 'name avatar email').lean();
