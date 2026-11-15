@@ -16,7 +16,7 @@ const TeamPage = () => {
         queryKey: ['team-stats'],
         queryFn: async () => {
             try {
-                const { data } = await api.get('/team/stats');
+                const { data } = await api.get('/teams/stats');
                 return data.data;
             } catch {
                 return null;

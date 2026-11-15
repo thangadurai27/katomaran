@@ -111,6 +111,7 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/qr', qrRoutes);
 app.use('/api/campaigns', campaignRoutes);
 app.use('/api/teams', teamRoutes);
+app.use('/api/team', teamRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/api/admin', adminRoutes);
