@@ -31,7 +31,7 @@ Deploy the full stack from zero:
    | `#` | `%23` |
    | `%` | `%25` |
 
-   Example: password `Snaplink@123` → `mongodb+srv://user:Snaplink%40123@cluster0.xxxxx.mongodb.net/snaplink?retryWrites=true&w=majority`
+   Example: password `Snaplink@123` → `mongodb+srv://user:xxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/snaplink?retryWrites=true&w=majority`
 
    > The backend detects an unencoded `@` in the password at boot and fails fast with a clear message (see `backend/src/configs/db.js`).
 
