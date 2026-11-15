@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Zap, Lock, Eye, EyeOff, Loader2, CheckCircle } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Lock, Eye, EyeOff, Loader2, CheckCircle } from 'lucide-react';
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
+import AuthLayout from '@/components/auth/AuthLayout';
 
 const ResetPasswordPage = () => {
     const { token } = useParams();
@@ -32,53 +32,72 @@ const ResetPasswordPage = () => {
     };
 
     return (
-        <div className="min-h-screen grid-bg flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
-                <div className="text-center mb-8">
-                    <Link to="/" className="inline-flex items-center gap-2 mb-6">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center shadow-glow">
-                            <Zap className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="text-2xl font-bold gradient-text">SnapLink AI</span>
-                    </Link>
-                    <h1 className="text-3xl font-bold text-white">Reset password</h1>
-                    <p className="text-dark-400 mt-2">Choose a strong new password</p>
+        <AuthLayout variant="reset">
+            {success ? (
+                <div className="flex flex-col items-center py-6 text-center">
+                    <span className="grid h-16 w-16 place-items-center rounded-full bg-emerald-50">
+                        <CheckCircle className="h-9 w-9 text-emerald-500" />
+                    </span>
+                    <h3 className="mt-5 font-display text-[20px] font-bold text-[#17153A]">Password reset!</h3>
+                    <p className="mt-2 text-[14px] text-[#6B6880]">Redirecting you to login…</p>
                 </div>
-
-                <div className="glass-card p-8">
-                    {success ? (
-                        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-4">
-                            <CheckCircle className="w-16 h-16 text-emerald-400 mx-auto mb-4" />
-                            <h3 className="text-xl font-bold text-white mb-2">Password reset!</h3>
-                            <p className="text-dark-400 text-sm mb-4">Redirecting you to login...</p>
-                            <Link to="/login" className="btn-primary">Go to Login</Link>
-                        </motion.div>
-                    ) : (
-                        <form onSubmit={handleSubmit} className="space-y-5">
-                            <div>
-                                <label className="input-label flex items-center gap-2"><Lock className="w-4 h-4" /> New Password</label>
-                                <div className="relative">
-                                    <input type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
-                                        placeholder="••••••••••" className="input-field pr-10" required />
-                                    <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white">
-                                        {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                    </button>
-                                </div>
-                            </div>
-                            <div>
-                                <label className="input-label">Confirm Password</label>
-                                <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)}
-                                    placeholder="••••••••••" className="input-field" required />
-                                {confirm && password !== confirm && <p className="text-red-400 text-xs mt-1">Passwords do not match</p>}
-                            </div>
-                            <button type="submit" disabled={isLoading || !password || password !== confirm} className="btn-primary w-full py-3">
-                                {isLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Resetting...</> : 'Reset Password'}
+            ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <label htmlFor="reset-password" className="mb-1.5 flex items-center gap-1.5 text-[13px] font-semibold text-[#3F3C56]">
+                            <Lock className="h-3.5 w-3.5 text-[#8B5CF6]" /> New Password
+                        </label>
+                        <div className="relative">
+                            <input
+                                id="reset-password"
+                                type={showPw ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Create a password (8+ characters)"
+                                className="input-field w-full rounded-xl border-[#E7E1F2] bg-white py-3 pr-11 shadow-none"
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPw(!showPw)}
+                                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9A97AC] transition-colors hover:text-[#6B6880]"
+                                aria-label={showPw ? 'Hide password' : 'Show password'}
+                            >
+                                {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </button>
-                        </form>
-                    )}
-                </div>
-            </motion.div>
-        </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="reset-confirm" className="mb-1.5 flex items-center gap-1.5 text-[13px] font-semibold text-[#3F3C56]">
+                            <Lock className="h-3.5 w-3.5 text-[#8B5CF6]" /> Confirm Password
+                        </label>
+                        <input
+                            id="reset-confirm"
+                            type="password"
+                            value={confirm}
+                            onChange={(e) => setConfirm(e.target.value)}
+                            placeholder="Re-enter your password"
+                            className="input-field w-full rounded-xl border-[#E7E1F2] bg-white py-3 shadow-none"
+                            required
+                        />
+                        {confirm && password !== confirm && (
+                            <p className="mt-1 text-[12.5px] font-medium text-red-500">Passwords do not match</p>
+                        )}
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={isLoading || !password || password !== confirm}
+                        className="btn-primary h-[52px] w-full text-[15px]"
+                    >
+                        {isLoading ? (
+                            <><Loader2 className="animate-spin" /> Resetting…</>
+                        ) : (
+                            'Reset Password'
+                        )}
+                    </button>
+                </form>
+            )}
+        </AuthLayout>
     );
 };
 

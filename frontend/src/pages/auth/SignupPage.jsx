@@ -1,11 +1,18 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '@/stores/authStore';
-import { Container } from '@/components/layout';
+import AuthLayout from '@/components/auth/AuthLayout';
 import { Input, Button } from '@/components/ui';
-import { Zap, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, User, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+
+const FieldLabel = ({ icon: Icon, htmlFor, children }) => (
+    <label htmlFor={htmlFor} className="mb-1.5 flex items-center gap-1.5 text-[13px] font-semibold text-[#3F3C56]">
+        <Icon className="h-3.5 w-3.5 text-[#8B5CF6]" /> {children}
+    </label>
+);
 
 const SignupPage = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -27,128 +34,113 @@ const SignupPage = () => {
         }
     };
 
+    const passwordToggle = (show, setShow, id) => (
+        <button
+            type="button"
+            onClick={() => setShow(!show)}
+            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9A97AC] transition-colors hover:text-[#6B6880]"
+            aria-label={show ? 'Hide password' : 'Show password'}
+            aria-controls={id}
+        >
+            {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
+    );
+
     return (
-        <div className="min-h-screen flex flex-col bg-background">
-            {/* Navbar */}
-            <nav className="navbar-auth border-b border-border bg-background">
-                <div className="navbar-auth-logo flex items-center gap-3 px-6 py-4">
-                    <Link to="/" className="flex items-center gap-2">
-                        <Zap className="w-6 h-6 text-primary" strokeWidth={2} />
-                        <span className="font-bold font-display text-primary-text">SnapLink AI</span>
-                    </Link>
+        <AuthLayout variant="signup">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+                {/* Name */}
+                <div>
+                    <FieldLabel icon={User} htmlFor="name">Full Name</FieldLabel>
+                    <Input
+                        id="name"
+                        {...register('name', { required: 'Full name is required' })}
+                        type="text"
+                        placeholder="Enter your full name"
+                        className="input-field w-full rounded-xl border-[#E7E1F2] bg-white py-3 shadow-none"
+                        autoComplete="name"
+                    />
+                    {errors.name && <p className="mt-1 text-[12.5px] font-medium text-red-500">{errors.name.message}</p>}
                 </div>
-                <ul className="navbar-auth-links hidden md:flex items-center gap-8 px-6 py-2">
-                    <li><Link to="/features" className="text-secondary-text hover:text-primary transition-colors">Features</Link></li>
-                    <li><Link to="/pricing" className="text-secondary-text hover:text-primary transition-colors">Pricing</Link></li>
-                </ul>
-            </nav>
 
-            <main className="flex-1 flex items-center justify-center py-12 px-4 bg-background">
-                <Container maxW="420" className="auth-card w-full p-8 sm:p-12 max-w-full">
-                    <div className="text-center mb-8">
-                        <Zap className="w-10 h-10 mx-auto mb-4 bg-primary/10 rounded-xl flex items-center justify-center" strokeWidth={2} />
-                        <h1 className="text-3xl font-bold font-display text-primary-text mb-2">Create account</h1>
-                        <p className="text-secondary-text">Start for free — no credit card required</p>
+                {/* Email */}
+                <div>
+                    <FieldLabel icon={Mail} htmlFor="email">Email address</FieldLabel>
+                    <Input
+                        id="email"
+                        {...register('email', { required: 'Email is required', pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Please enter a valid email address' } })}
+                        type="email"
+                        placeholder="Enter your email address"
+                        className="input-field w-full rounded-xl border-[#E7E1F2] bg-white py-3 shadow-none"
+                        autoComplete="email"
+                    />
+                    {errors.email && <p className="mt-1 text-[12.5px] font-medium text-red-500">{errors.email.message}</p>}
+                </div>
+
+                {/* Password */}
+                <div>
+                    <FieldLabel icon={Lock} htmlFor="password">Password</FieldLabel>
+                    <div className="relative">
+                        <Input
+                            id="password"
+                            {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters' } })}
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Create a password (8+ characters)"
+                            className="input-field w-full rounded-xl border-[#E7E1F2] bg-white py-3 pr-11 shadow-none"
+                            autoComplete="new-password"
+                        />
+                        {passwordToggle(showPassword, setShowPassword, 'password')}
                     </div>
+                    {errors.password && <p className="mt-1 text-[12.5px] font-medium text-red-500">{errors.password.message}</p>}
+                </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        {/* Name */}
-                        <div className="space-y-2">
-                            <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
-                            <Input
-                                id="name"
-                                {...register('name', { required: 'Full name is required' })}
-                                type="text"
-                                placeholder="John Doe"
-                                className="input-field w-full"
-                                autoComplete="name"
-                            />
-                            {errors.name && <p className="text-danger text-sm mt-0.5">{errors.name.message}</p>}
-                        </div>
+                {/* Confirm Password */}
+                <div>
+                    <FieldLabel icon={Lock} htmlFor="confirmPassword">Confirm Password</FieldLabel>
+                    <div className="relative">
+                        <Input
+                            id="confirmPassword"
+                            {...register('confirmPassword', {
+                                required: 'Please confirm your password',
+                                validate: (value) => value === getValues('password') || 'Passwords do not match',
+                            })}
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            placeholder="Re-enter your password"
+                            className="input-field w-full rounded-xl border-[#E7E1F2] bg-white py-3 pr-11 shadow-none"
+                            autoComplete="new-password"
+                        />
+                        {passwordToggle(showConfirmPassword, setShowConfirmPassword, 'confirmPassword')}
+                    </div>
+                    {errors.confirmPassword && <p className="mt-1 text-[12.5px] font-medium text-red-500">{errors.confirmPassword.message}</p>}
+                </div>
 
-                        {/* Email */}
-                        <div className="space-y-2">
-                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
-                            <Input
-                                id="email"
-                                {...register('email', { required: 'Email is required', pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email address' } })}
-                                type="email"
-                                placeholder="you@example.com"
-                                className="input-field w-full"
-                                autoComplete="email"
-                            />
-                            {errors.email && <p className="text-danger text-sm mt-0.5">{errors.email.message}</p>}
-                        </div>
+                {/* Terms */}
+                <div>
+                    <label className="flex cursor-pointer select-none items-start gap-2.5 text-[13px] leading-relaxed text-[#5C5975]">
+                        <input
+                            type="checkbox"
+                            {...register('terms', { required: 'Please accept the terms to continue' })}
+                            className="mt-0.5 h-4 w-4 shrink-0 rounded border-[#D6D0E4] accent-[#7C3AED]"
+                        />
+                        <span>
+                            By creating an account, you agree to our{' '}
+                            <Link to="/terms" className="font-semibold text-[#7C3AED] hover:underline">Terms of Service</Link> and{' '}
+                            <Link to="/privacy-policy" className="font-semibold text-[#7C3AED] hover:underline">Privacy Policy</Link>.
+                        </span>
+                    </label>
+                    {errors.terms && <p className="mt-1 text-[12.5px] font-medium text-red-500">{errors.terms.message}</p>}
+                </div>
 
-                        {/* Password */}
-                        <div className="space-y-2">
-                            <div className="relative">
-                                <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
-                                <Input
-                                    id="password"
-                                    {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters' } })}
-                                    type={showPassword ? 'text' : 'password'}
-                                    placeholder="8+ characters"
-                                    className="input-field w-full pr-16"
-                                    autoComplete="new-password"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
-                                    style={{ color: 'var(--muted)' }}
-                                >
-                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </button>
-                            </div>
-                            {errors.password && <p className="text-danger text-sm mt-0.5">{errors.password.message}</p>}
-                        </div>
-
-                        {/* Confirm Password */}
-                        <div className="space-y-2">
-                            <div className="relative">
-                                <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
-                                <Input
-                                    id="confirmPassword"
-                                    {...register('confirmPassword', {
-                                        required: 'Please confirm your password',
-                                        validate: (value) => value === getValues('password') || 'Passwords do not match',
-                                    })}
-                                    type={showConfirmPassword ? 'text' : 'password'}
-                                    placeholder="Confirm your password"
-                                    className="input-field w-full pr-16"
-                                    autoComplete="new-password"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
-                                    style={{ color: 'var(--muted)' }}
-                                >
-                                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </button>
-                            </div>
-                            {errors.confirmPassword && <p className="text-danger text-sm mt-0.5">{errors.confirmPassword.message}</p>}
-                        </div>
-
-                        {/* Terms */}
-                        <p className="text-xs text-secondary-text">
-                            By signing up, you agree to our <Link to="/terms" className="font-medium hover:underline text-primary">Terms of Service</Link> and <Link to="/privacy-policy" className="font-medium hover:underline text-primary">Privacy Policy</Link>
-                        </p>
-
-                        {/* Submit */}
-                        <Button type="submit" disabled={isLoading} className="w-full">
-                            {isLoading ? (<><Loader2 className="mr-2 animate-spin" /> Creating account...</>) : 'Get started free →'}
-                        </Button>
-                    </form>
-
-                    {/* Feature highlights / Already have account */}
-                    <p className="text-center text-sm mt-6 text-secondary-text">
-                        Already have an account? <Link to="/login" className="font-medium hover:underline text-primary">Sign in</Link>
-                    </p>
-                </Container>
-            </main>
-        </div>
+                {/* Submit */}
+                <Button type="submit" disabled={isLoading} className="btn-primary h-[52px] w-full text-[15px]">
+                    {isLoading ? (
+                        <><Loader2 className="animate-spin" /> Creating account…</>
+                    ) : (
+                        <>Get Started Free <ArrowRight className="h-4 w-4" /></>
+                    )}
+                </Button>
+            </form>
+        </AuthLayout>
     );
 };
 

@@ -1,17 +1,24 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuthStore } from '@/stores/authStore';
+import AuthLayout from '@/components/auth/AuthLayout';
 import { Input, Button } from '@/components/ui';
-import { Zap, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, Lock, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const zodSchema = z.object({
     email: z.string().email('Please enter a valid email'),
     password: z.string().min(8, 'Password must be at least 8 characters')
 });
+
+const FieldLabel = ({ icon: Icon, htmlFor, children }) => (
+    <label htmlFor={htmlFor} className="mb-1.5 flex items-center gap-1.5 text-[13px] font-semibold text-[#3F3C56]">
+        <Icon className="h-3.5 w-3.5 text-[#8B5CF6]" /> {children}
+    </label>
+);
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -32,88 +39,72 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-background">
-            {/* Navbar */}
-            <nav className="navbar-auth border-b border-border bg-background">
-                <div className="navbar-auth-logo flex items-center gap-3 px-6 py-4">
-                    <Link to="/" className="flex items-center gap-2">
-                        <Zap className="w-6 h-6 text-primary" strokeWidth={2} />
-                        <span className="font-bold font-display text-primary-text">SnapLink AI</span>
+        <AuthLayout variant="login">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+                {/* Email */}
+                <div>
+                    <FieldLabel icon={Mail} htmlFor="email">Email address</FieldLabel>
+                    <Input
+                        id="email"
+                        {...register('email')}
+                        type="email"
+                        placeholder="Enter your email"
+                        className="input-field w-full rounded-xl border-[#E7E1F2] bg-white py-3 shadow-none"
+                        autoComplete="email"
+                    />
+                    {errors.email && <p className="mt-1 text-[12.5px] font-medium text-red-500">{errors.email.message}</p>}
+                </div>
+
+                {/* Password */}
+                <div>
+                    <FieldLabel icon={Lock} htmlFor="password">Password</FieldLabel>
+                    <div className="relative">
+                        <Input
+                            id="password"
+                            {...register('password')}
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Enter your password"
+                            className="input-field w-full rounded-xl border-[#E7E1F2] bg-white py-3 pr-11 shadow-none"
+                            autoComplete="current-password"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9A97AC] transition-colors hover:text-[#6B6880]"
+                            aria-label={showPassword ? 'Hide password' : 'Show password'}
+                            aria-controls="password"
+                        >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                    </div>
+                    {errors.password && <p className="mt-1 text-[12.5px] font-medium text-red-500">{errors.password.message}</p>}
+                </div>
+
+                {/* Remember & Forgot */}
+                <div className="flex items-center justify-between text-[13px] text-[#5C5975]">
+                    <label className="flex cursor-pointer select-none items-center gap-2">
+                        <input
+                            type="checkbox"
+                            {...register('rememberMe')}
+                            className="h-4 w-4 rounded border-[#D6D0E4] accent-[#7C3AED]"
+                        />
+                        Remember me
+                    </label>
+                    <Link to="/forgot-password" className="font-semibold text-[#7C3AED] transition-colors hover:text-[#6D28D9]">
+                        Forgot password?
                     </Link>
                 </div>
-                <ul className="navbar-auth-links hidden md:flex items-center gap-8 px-6 py-2">
-                    <li><Link to="/features" className="text-secondary-text hover:text-primary transition-colors">Features</Link></li>
-                    <li><Link to="/pricing" className="text-secondary-text hover:text-primary transition-colors">Pricing</Link></li>
-                </ul>
-            </nav>
 
-            <main className="flex-1 flex items-center justify-center py-12 px-4 bg-background">
-                <div className="auth-card p-8 sm:p-12 max-w-[420px] w-full mx-auto">
-                    <div className="text-center mb-8">
-                        <Zap className="w-10 h-10 mx-auto mb-4 bg-primary/10 rounded-xl flex items-center justify-center" strokeWidth={2} />
-                        <h1 className="text-3xl font-bold font-display text-primary-text mb-2">Welcome back</h1>
-                        <p className="text-secondary-text">Sign in to your account to continue</p>
-                    </div>
-
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        {/* Email */}
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
-                            <Input
-                                id="email"
-                                {...register('email')}
-                                type="email"
-                                placeholder="you@example.com"
-                                className="input-field w-full"
-                                autoComplete="email"
-                            />
-                            {errors.email && <p className="text-danger text-sm mt-1.5">{errors.email.message}</p>}
-                        </div>
-
-                        {/* Password */}
-                        <div className="relative">
-                            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
-                            <Input
-                                id="password"
-                                {...register('password')}
-                                type={showPassword ? 'text' : 'password'}
-                                placeholder="••••••••"
-                                className="input-field w-full pr-16"
-                                autoComplete="current-password"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
-                                style={{ color: 'var(--muted)' }}
-                            >
-                                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                            </button>
-                        </div>
-                        {errors.password && <p className="text-danger text-sm mt-1.5">{errors.password.message}</p>}
-
-                        {/* Remember & Forgot */}
-                        <div className="flex items-center justify-between text-xs text-secondary-text">
-                            <label className="flex items-center gap-2 cursor-pointer select-none">
-                                <input type="checkbox" {...register('rememberMe')} className="w-4 h-4 rounded border-primary focus:ring-primary" />
-                                Remember me
-                            </label>
-                            <Link to="/forgot-password" className="hover:underline text-sm">Forgot password?</Link>
-                        </div>
-
-                        {/* Submit */}
-                        <Button type="submit" disabled={isLoading} className="w-full">
-                            {isLoading ? (<><Loader2 className="mr-2 animate-spin" /> Signing in...</>) : 'Sign in →'}
-                        </Button>
-                    </form>
-
-                    {/* Divider / Account creation */}
-                    <p className="text-center text-sm mt-6 text-secondary-text">
-                        Don't have an account? <Link to="/signup" className="font-medium hover:underline text-primary">Sign up free</Link>
-                    </p>
-                </div>
-            </main>
-        </div>
+                {/* Submit */}
+                <Button type="submit" disabled={isLoading} className="btn-primary h-[52px] w-full text-[15px]">
+                    {isLoading ? (
+                        <><Loader2 className="animate-spin" /> Signing in…</>
+                    ) : (
+                        <>Sign In <ArrowRight className="h-4 w-4" /></>
+                    )}
+                </Button>
+            </form>
+        </AuthLayout>
     );
 };
 
