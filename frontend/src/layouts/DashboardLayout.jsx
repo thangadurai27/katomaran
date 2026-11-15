@@ -71,7 +71,7 @@ const DashboardLayout = () => {
                 <DashboardHeader />
 
                 <main className="dashboard-main dashboard-surface dashboard-canvas px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-                    <div className="mx-auto w-full min-w-0 max-w-[1400px]">
+                    <div className="mx-auto w-full min-w-0 max-w-[1600px]">
                         <PageTransition key={location.pathname}>
                             <Outlet />
                         </PageTransition>

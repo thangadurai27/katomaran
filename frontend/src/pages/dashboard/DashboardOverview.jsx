@@ -302,7 +302,7 @@ const DashboardOverview = () => {
                                             <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid vertical={false} stroke="#F0EDF8" strokeDasharray="3 3" />
+                                    <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
                                     <XAxis
                                         dataKey="label"
                                         axisLine={false}
@@ -332,7 +332,7 @@ const DashboardOverview = () => {
                                 </AreaChart>
                             </ResponsiveChart>
                         ) : (
-                            <div className="mx-3 mt-3 flex h-[250px] flex-col items-center justify-center rounded-xl border border-dashed border-[#EBE6F6] bg-[#FBFAFE]">
+                            <div className="mx-3 mt-3 flex h-[250px] flex-col items-center justify-center rounded-xl border border-dashed border-[#EBE6F6] bg-[#FBFAFE] dark:border-[#332a4d] dark:bg-[#1a1628]">
                                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#F2EAFF] text-[#7C3AED]">
                                     <BarChart3 className="h-6 w-6" />
                                 </span>
@@ -460,7 +460,7 @@ const DashboardOverview = () => {
                         <div className="overflow-x-auto">
                             <table className="w-full min-w-[640px] border-collapse text-left">
                                 <thead>
-                                    <tr className="border-b border-[var(--border)] bg-[#FBFAFE]">
+                                    <tr className="border-b border-[var(--border)] bg-[#FBFAFE] dark:bg-[#1a1628]">
                                         {['Short Link', 'Original URL', 'Clicks', 'Created', 'Status', ''].map(
                                             (heading, index) => (
                                                 <th
@@ -482,7 +482,7 @@ const DashboardOverview = () => {
                                         return (
                                             <tr
                                                 key={link._id}
-                                                className="group border-b border-[var(--border)] last:border-0 transition-colors hover:bg-[#FBFAFE]"
+                                                className="group border-b border-[var(--border)] last:border-0 transition-colors hover:bg-[#FBFAFE] dark:hover:bg-[#1a1628]"
                                             >
                                                 <td className="py-3.5 pl-6 pr-4">
                                                     <div className="inline-flex max-w-[190px] items-center gap-1.5 rounded-md bg-[#F5F0FF] px-2 py-1">
@@ -595,7 +595,7 @@ const DashboardOverview = () => {
                         </Link>
                     </div>
 
-                    <div className="mt-5 flex flex-1 flex-col justify-center rounded-2xl border border-[#F0E8FF] bg-gradient-to-br from-[#FAF7FF] to-[#F4EDFF] p-5">
+                    <div className="mt-5 flex flex-1 flex-col justify-center rounded-2xl border border-[#F0E8FF] bg-gradient-to-br from-[#FAF7FF] to-[#F4EDFF] p-5 dark:border-[#3a2a5c] dark:from-[#211a35] dark:to-[#2a2142]">
                         <div className="flex items-start gap-3.5">
                             <span
                                 className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${
@@ -619,7 +619,7 @@ const DashboardOverview = () => {
 
                         <Link
                             to="/dashboard/ai-insights"
-                            className="mt-4 inline-flex items-center gap-1.5 self-start rounded-lg bg-white/70 px-3 py-1.5 text-[11px] font-semibold text-[#7C3AED] transition-colors hover:bg-white"
+                            className="mt-4 inline-flex items-center gap-1.5 self-start rounded-lg bg-white/70 px-3 py-1.5 text-[11px] font-semibold text-[#7C3AED] transition-colors hover:bg-white dark:bg-white/10 dark:text-[#C4B5FD] dark:hover:bg-white/15"
                         >
                             Explore AI report <ArrowUpRight className="h-3 w-3" />
                         </Link>

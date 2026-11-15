@@ -62,6 +62,11 @@ Here is the flow of the application:
 ### 11. Dashboard Overview
 ![Dashboard Overview](./Screenshot/dashboard-overview.png)
 
+### 11b. Previous Dashboard Design
+Kept for comparison with the refreshed dashboard UI.
+
+![Previous Dashboard Overview](./Screenshot/dashboard-overview-old.png)
+
 ### 12. Dashboard Details
 ![Dashboard Details](./Screenshot/dashboard-details.png)
 

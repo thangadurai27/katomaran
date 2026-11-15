@@ -177,10 +177,10 @@ const AnalyticsPage = () => {
                             <BarChart data={dailyData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke={GRID_STROKE} vertical={false} />
                                 <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} interval="preserveStartEnd" />
-                                <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} width={36} />
+                                <YAxis tick={{ fill: '#8E8AA3', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} width={44} tickFormatter={(v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}K` : v)} />
                                 <Tooltip content={<ChartTooltip />} />
-                                <Bar dataKey="clicks" name="Clicks" fill="var(--primary)" radius={[6, 6, 0, 0]} maxBarSize={40} />
-                                <Bar dataKey="unique" name="Unique" fill="var(--secondary)" radius={[6, 6, 0, 0]} maxBarSize={40} />
+                                <Bar dataKey="clicks" name="Clicks" fill="#7C3AED" radius={[6, 6, 0, 0]} maxBarSize={40} />
+                                <Bar dataKey="unique" name="Unique" fill="#B394FF" radius={[6, 6, 0, 0]} maxBarSize={40} />
                             </BarChart>
                         </ResponsiveChart>
                     ) : (
@@ -253,7 +253,10 @@ const AnalyticsPage = () => {
                                         stroke="#fff" strokeWidth={2}
                                     >
                                         {browserData.map((_, i) => (
-                                            <Cell key={i} fill="var(--primary)" />
+                                            <Cell
+                                                key={i}
+                                                fill={['#7C3AED', '#8B5CF6', '#A78BFA', '#C4B5FD', '#DDD6FE', '#EDE9FE'][i % 6]}
+                                            />
                                         ))}
                                     </Pie>
                                 </PieChart>

@@ -60,7 +60,7 @@ const StatCard = ({
 
     return (
         <div
-            className={`animate-in relative min-w-0 overflow-hidden rounded-2xl border p-4 sm:p-5 ${className}`}
+            className={`stat-card-tint animate-in relative min-w-0 overflow-hidden rounded-2xl border p-4 sm:p-5 ${className}`}
             style={{
                 background: tone.card,
                 borderColor: tone.border,

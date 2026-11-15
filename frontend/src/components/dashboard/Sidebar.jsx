@@ -192,9 +192,9 @@ const Sidebar = () => {
             {/* Upgrade card */}
             {!isPro && (
                 <div className="mt-auto shrink-0 p-5 pt-0">
-                    <div className="relative overflow-hidden rounded-2xl border border-[#EDE4FF] bg-gradient-to-br from-[#FAF7FF] via-[#F6F0FF] to-[#F0E8FF] p-5">
-                        <span className="pointer-events-none absolute -right-7 -top-8 h-24 w-24 rounded-full bg-[#E6D8FF]/70 blur-2xl" />
-                        <span className="pointer-events-none absolute -bottom-10 -left-8 h-24 w-24 rounded-full bg-white/70 blur-2xl" />
+                    <div className="relative overflow-hidden rounded-2xl border border-[#EDE4FF] bg-gradient-to-br from-[#FAF7FF] via-[#F6F0FF] to-[#F0E8FF] p-5 dark:border-[#3a2a5c] dark:from-[#1e1730] dark:via-[#241b3a] dark:to-[#2c2147]">
+                        <span className="pointer-events-none absolute -right-7 -top-8 h-24 w-24 rounded-full bg-[#E6D8FF]/70 blur-2xl dark:bg-[#3a2a5c]/50" />
+                        <span className="pointer-events-none absolute -bottom-10 -left-8 h-24 w-24 rounded-full bg-white/70 blur-2xl dark:bg-white/5" />
 
                         <div className="relative">
                             <span className="grid h-9 w-9 place-items-center rounded-xl bg-white text-[#F59E0B] shadow-[0_4px_12px_rgba(124,58,237,0.10)]">

@@ -73,10 +73,10 @@ const DashboardHeader = () => {
                     <input
                         type="search"
                         placeholder="Search links, campaigns, or insights..."
-                        className="h-11 w-full rounded-xl border border-[#ECEBF4] bg-[#F8F7FC] pl-11 pr-16 text-[14px] text-[var(--text-primary)] outline-none transition-all placeholder:text-[var(--text-muted)] focus:border-[#C9B4FF] focus:bg-white focus:ring-4 focus:ring-[#7C3AED]/[0.08]"
+                        className="h-11 w-full rounded-xl border border-[#ECEBF4] bg-[#F8F7FC] pl-11 pr-16 text-[14px] text-[var(--text-primary)] outline-none transition-all placeholder:text-[var(--text-muted)] focus:border-[#C9B4FF] focus:bg-white focus:ring-4 focus:ring-[#7C3AED]/[0.08] dark:border-[#2a2540] dark:bg-[#1e1a30] dark:focus:bg-[#221d36]"
                         aria-label="Search"
                     />
-                    <kbd className="pointer-events-none absolute right-3 hidden items-center rounded-md border border-[#E4E1EE] bg-white px-1.5 py-0.5 text-[10px] font-medium text-[var(--text-muted)] lg:inline-flex">
+                    <kbd className="pointer-events-none absolute right-3 hidden items-center rounded-md border border-[#E4E1EE] bg-white px-1.5 py-0.5 text-[10px] font-medium text-[var(--text-muted)] dark:border-[#332a4d] dark:bg-[#1e1a30] lg:inline-flex">
                         ⌘K
                     </kbd>
                 </div>
