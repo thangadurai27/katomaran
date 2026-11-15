@@ -50,12 +50,12 @@ const connectDB = async () => {
     if (isConnecting) {
         logger.info('MongoDB connection already in progress, waiting...');
         return new Promise((resolve) => {
-            const checkConnection = async () => {
+            const checkConnection = () => {
                 if (mongoose.connection.readyState === 1) {
                     resolve(true);
-                } else if (mongoose.connection.readyState === 0 || mongoose.connection.readyState === 3) {
-                    // Not connected or disconnected, try again
-                    logger.info('Connection not ready, retrying...');
+                } else {
+                    // readyState 2 (connecting) and 0/3 (disconnected) — keep
+                    // polling; scheduleReconnect keeps retrying the connection.
                     setTimeout(checkConnection, 1000);
                 }
             };
