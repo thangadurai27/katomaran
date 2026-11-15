@@ -10,6 +10,7 @@ const toPublicUser = (user) => ({
     role: user.role,
     plan: user.plan,
     avatar: user.avatar,
+    isDemo: !!user.isDemo,
     isEmailVerified: user.isEmailVerified,
     createdAt: user.createdAt,
 });

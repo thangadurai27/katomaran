@@ -17,6 +17,7 @@ const { getCorsOrigins, isAllowedOrigin } = require('./utils/corsOrigins');
 const { generalLimiter } = require('./middlewares/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
 const requireDb = require('./middlewares/requireDb');
+const { ensureDemoAccount } = require('./utils/demoSeed');
 
 // Import Routes
 const authRoutes = require('./routes/auth.routes');
@@ -154,6 +155,8 @@ const startServer = async () => {
     connectDB().then((dbConnected) => {
         if (dbConnected) {
             logger.info('MongoDB connected - API routes will function normally');
+            // Idempotent: creates the shared demo account + sample data if missing.
+            ensureDemoAccount();
         } else {
             logger.warn('MongoDB not connected - API routes requiring database will return 503');
         }

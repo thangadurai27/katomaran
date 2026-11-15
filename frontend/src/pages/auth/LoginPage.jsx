@@ -38,6 +38,16 @@ const LoginPage = () => {
         }
     };
 
+    const handleDemoLogin = async () => {
+        const result = await login({ email: 'demo@gmail.com', password: 'demo123' });
+        if (result.success) {
+            toast.success('Welcome to SnapLink AI Demo!');
+            navigate('/dashboard/overview', { replace: true });
+        } else {
+            toast.error(result.error || 'Demo login is temporarily unavailable. Please try again.');
+        }
+    };
+
     return (
         <AuthLayout variant="login">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
@@ -103,6 +113,38 @@ const LoginPage = () => {
                         <>Sign In <ArrowRight className="h-4 w-4" /></>
                     )}
                 </Button>
+
+                {/* Demo account */}
+                <div className="pt-1">
+                    <div className="flex items-center gap-3">
+                        <span className="h-px flex-1 bg-[#EDE8F6]" />
+                        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#9A97AC]">or</span>
+                        <span className="h-px flex-1 bg-[#EDE8F6]" />
+                    </div>
+
+                    <div className="mt-4 rounded-2xl border border-[#EBE3FA] bg-[#F8F5FE] p-5 text-center">
+                        <h3 className="font-display text-[16px] font-bold text-[#17153A]">Explore SnapLink AI</h3>
+                        <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#6B6880]">
+                            New to SnapLink AI? Explore all features instantly with our demo account. No registration required.
+                        </p>
+                        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+                            <span className="rounded-lg bg-white px-2.5 py-1.5 font-mono text-[11.5px] text-[#5C5975] shadow-sm">demo@gmail.com</span>
+                            <span className="rounded-lg bg-white px-2.5 py-1.5 font-mono text-[11.5px] text-[#5C5975] shadow-sm">demo123</span>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleDemoLogin}
+                            disabled={isLoading}
+                            className="btn-primary mt-4 h-11 w-full text-[14px]"
+                        >
+                            {isLoading ? (
+                                <><Loader2 className="animate-spin" /> Starting demo…</>
+                            ) : (
+                                <>🚀 Try Demo Account</>
+                            )}
+                        </button>
+                    </div>
+                </div>
             </form>
         </AuthLayout>
     );

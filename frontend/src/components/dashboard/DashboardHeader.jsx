@@ -39,7 +39,7 @@ const DashboardHeader = () => {
         .toUpperCase() || 'U';
 
     const firstName = user?.name?.split(' ')[0] || 'there';
-    const planLabel = user?.plan ? `${String(user.plan).charAt(0).toUpperCase()}${String(user.plan).slice(1)} Plan` : 'Free Plan';
+    const planLabel = user?.isDemo ? 'Demo Account' : user?.plan ? `${String(user.plan).charAt(0).toUpperCase()}${String(user.plan).slice(1)} Plan` : 'Free Plan';
 
     useEffect(() => {
         const onKey = (e) => {
@@ -120,8 +120,15 @@ const DashboardHeader = () => {
                                 {initials}
                             </span>
                             <span className="hidden text-left md:block">
-                                <span className="block text-[13px] font-semibold leading-none text-[var(--text-primary)]">
-                                    {firstName}
+                                <span className="flex items-center gap-1.5">
+                                    <span className="text-[13px] font-semibold leading-none text-[var(--text-primary)]">
+                                        {firstName}
+                                    </span>
+                                    {user?.isDemo && (
+                                        <span className="rounded-full bg-[#F5F0FF] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[#7C3AED]">
+                                            Demo
+                                        </span>
+                                    )}
                                 </span>
                                 <span className="mt-1 block text-[11px] leading-none text-[var(--text-muted)]">
                                     {planLabel}

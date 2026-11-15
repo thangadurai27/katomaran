@@ -33,6 +33,10 @@ const updateProfile = asyncHandler(async (req, res) => {
 // @desc  Change password
 // @route PUT /api/users/change-password
 const changePassword = asyncHandler(async (req, res) => {
+    if (req.user.isDemo) {
+        return error(res, 'The demo account password cannot be changed.', 403);
+    }
+
     const { currentPassword, newPassword } = req.body;
     const user = await User.findById(req.user._id).select('+password');
 
@@ -59,6 +63,10 @@ const uploadAvatar = asyncHandler(async (req, res) => {
 // @desc  Delete account
 // @route DELETE /api/users/account
 const deleteAccount = asyncHandler(async (req, res) => {
+    if (req.user.isDemo) {
+        return error(res, 'The demo account is shared and cannot be deleted.', 403);
+    }
+
     const { password } = req.body;
     const user = await User.findById(req.user._id).select('+password');
 

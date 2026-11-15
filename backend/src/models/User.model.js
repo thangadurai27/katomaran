@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin', 'superadmin'],
         default: 'user'
     },
+    isDemo: {
+        type: Boolean,
+        default: false
+    },
     plan: {
         type: String,
         enum: ['free', 'starter', 'pro', 'enterprise'],

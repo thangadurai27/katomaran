@@ -115,13 +115,15 @@ const login = asyncHandler(async (req, res) => {
         return error(res, 'Invalid email or password.', 401);
     }
 
-    if (user.isLocked) {
+    // The shared demo account uses a public password, so lockout protection
+    // would only let strangers lock everyone out of the demo.
+    if (user.isLocked && !user.isDemo) {
         return error(res, 'Account temporarily locked due to multiple failed attempts. Try again after 2 hours.', 423);
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-        user.incLoginAttempts().catch(() => {});
+        if (!user.isDemo) user.incLoginAttempts().catch(() => {});
         logActivityAsync({
             user: user._id,
             action: 'login_failed',
@@ -229,6 +231,11 @@ const forgotPassword = asyncHandler(async (req, res) => {
         return success(res, 'If an account exists with that email, a reset link has been sent.');
     }
 
+    // Demo credentials are fixed and public — password reset must not change them.
+    if (user.isDemo) {
+        return success(res, 'If an account exists with that email, a reset link has been sent.');
+    }
+
     const resetToken = generateToken();
     const hashedToken = hashToken(resetToken);
 
@@ -257,6 +264,10 @@ const resetPassword = asyncHandler(async (req, res) => {
     }).select('+password');
 
     if (!user) return error(res, 'Invalid or expired reset token.', 400);
+
+    if (user.isDemo) {
+        return error(res, 'The demo account password cannot be changed.', 403);
+    }
 
     user.password = req.body.password;
     user.passwordResetToken = undefined;
