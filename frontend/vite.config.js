@@ -13,8 +13,8 @@ export default defineConfig({
         name: 'SnapLink AI',
         short_name: 'SnapLink',
         description: 'AI-powered URL shortener and analytics',
-        theme_color: '#4f46e5',
-        background_color: '#f4f6fb',
+        theme_color: '#5145E5',
+        background_color: '#f7f8fc',
         display: 'standalone',
         orientation: 'portrait-primary',
         scope: '/',
@@ -29,12 +29,32 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,svg,png,woff2}'],
+        // Do NOT precache HTML — stale index.html references deleted hashed assets
+        globPatterns: ['**/*.{js,css,ico,svg,png,woff2,webmanifest}'],
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/assets\//, /^\/sw\.js/, /^\/registerSW\.js/, /^\/manifest\.webmanifest/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
             options: { cacheName: 'google-fonts-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 } },
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: { cacheName: 'google-fonts-static-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 } },
+          },
+          {
+            urlPattern: /^https:\/\/katomaran-y789\.onrender\.com\/api\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 5 },
+              networkTimeoutSeconds: 8,
+            },
           },
         ],
       },
