@@ -174,7 +174,7 @@ const ensureDemoUser = async () => {
         // credential check below fails, the demo must stay reachable.
         await User.updateOne(
             { _id: user._id },
-            { $set: { isDemo: true, isActive: true, isBanned: false, loginAttempts: 0 }, $unset: { lockUntil: 1 } }
+            { $set: { isDemo: true, isActive: true, isBanned: false, name: 'Demo User', loginAttempts: 0 }, $unset: { lockUntil: 1 } }
         );
 
         let passwordOk = false;
